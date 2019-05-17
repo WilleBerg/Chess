@@ -13,6 +13,7 @@ namespace Schack {
     Discover check bug
     New game/ Reset game
     SchackPos Bug
+    Fix git and github
      */
 
     public class Game1 : Game {
