@@ -16,6 +16,7 @@ namespace Schack
 
         public override void ActualChecker(int pos, bool lfs)
         {
+            am = new bool[64];
             if (DownLeftFirst(pos, lfs))
             {
                 am[pos + 6] = true;

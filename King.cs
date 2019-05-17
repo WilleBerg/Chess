@@ -34,6 +34,7 @@ namespace Schack
         override
         public void ActualChecker(int pos, bool lfs)
         {
+            am = new bool[64];
             kingMove(pos);
         }
         public bool SchackMatt() {

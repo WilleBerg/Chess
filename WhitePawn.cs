@@ -18,6 +18,7 @@ namespace Schack
 
         public override void ActualChecker(int pos, bool lfs)
         {
+            am = new bool[64];
             wPawnMove(pos);
             schack = new bool[64];
             SchackChecker(am);
@@ -30,7 +31,7 @@ namespace Schack
         {
             return am[(a.X / 87) + 8 * (a.Y / 87)];
         }
-
+        
         private int wPawnMove(int pos)
         {
 

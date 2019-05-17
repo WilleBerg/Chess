@@ -18,6 +18,7 @@ namespace Schack
 
         public override void ActualChecker(int pos, bool lfs)
         {
+            am = new bool[64];
             wPawnMove(pos);
             schack = new bool[64];
             SchackChecker(am);

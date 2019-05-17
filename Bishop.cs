@@ -12,6 +12,7 @@ namespace Schack {
         }
 
         public override void ActualChecker(int pos, bool lfs) {
+            am = new bool[64];
             for (int i = 1; i < diagUpRight(pos, lfs); i++) {
                 am[pos - 7 * i] = true;
             }
