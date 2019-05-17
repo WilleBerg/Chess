@@ -12,7 +12,7 @@ namespace Schack
     class King : Piece
     {
         public bool isFirstMove;
-        public King(Texture2D texture, Rectangle rectangle, Vector2 vector, Vector2 tempPos, bool isWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter) : base(texture, rectangle, vector, tempPos, isWhite, allowedMoves, am, isDead, checkCounter)
+        public King(Texture2D texture, Rectangle rectangle, Vector2 vector, Vector2 tempPos, bool isWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(texture, rectangle, vector, tempPos, isWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
             this.texture = texture;
             this.rectangle = rectangle;
@@ -60,6 +60,8 @@ namespace Schack
             if (temp is Queen) {
                 Game1.debugger.Add("Checker is Queen ; IsWhite = " + temp.isWhite);
                 Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("isWho = " + Game1.isWho[Game1.getPos(temp)].toString());
+                Game1.debugger.Add("isTaken = " + Game1.isTaken[Game1.getPos(temp)]);
             } else if (temp is Rook) {
                 Game1.debugger.Add("Checker is Rook ; IsWhite = " + temp.isWhite);
                 Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
@@ -107,8 +109,9 @@ namespace Schack
             Game1.theChecker = a;
             for (int i = 0; i < Game1.activePiece.Count; i++) {
                 for (int j = 0; j < 8 * 8; j++) {
-                    if (!(Game1.activePiece[i] is King) && Game1.SimulatedMove(Game1.activePiece[i], j)) {
+                    if (Game1.activePiece[i].isWhite != a.isWhite && !(Game1.activePiece[i] is King) && Game1.SimulatedMove(Game1.activePiece[i], a, j)) {
                         temporary++;
+                        Game1.debugger.Add(Game1.activePiece[i].toString() + " Pos: " + Game1.getPos(Game1.activePiece[i]));
                         break;
                     }
                 }
@@ -116,6 +119,7 @@ namespace Schack
                     Game1.activePiece[i].ActualChecker(Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y), false);
                     if (Game1.activePiece[i].am[Game1.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] == true) {
                         Game1.debugger.Add("KING => Line 65 \n");
+                        Game1.debugger.Add(Game1.activePiece[i].toString());
                         Game1.checkPieces.Add(Game1.activePiece[i]);
                     }
                 }
@@ -471,5 +475,12 @@ namespace Schack
             return false;
         }
 
+        public override void CheckPath(int pos) {
+            throw new NotImplementedException();
+        }
+
+        public override string toString() {
+            return "King";
+        }
     }
 }

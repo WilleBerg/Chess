@@ -21,7 +21,8 @@ namespace Schack
         public bool[] allowedMoves { get; set; }
         public bool[] am;
         public int checkCounter;
-        public Piece(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter)
+        public bool[] checkArray;
+        public Piece(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray)
         {
             texture = newTexture;
             rectangle = newRectangle;
@@ -32,6 +33,7 @@ namespace Schack
             this.am = am;
             this.isDead = isDead;
             this.checkCounter = checkCounter;
+            this.checkArray = checkArray;
         }
         protected Piece(Texture2D texture, Rectangle rectangle, Vector2 vector, Vector2 tempPos, bool isWhite, bool isDead, bool[] shack, bool[] allowedMoves, bool[] am) {
             this.texture = texture;
@@ -67,8 +69,8 @@ namespace Schack
         }
 
         public abstract void ActualSchack(int pos);
+        public abstract void CheckPath(int pos);
 
-
-
+        public abstract string toString();
     }
 }

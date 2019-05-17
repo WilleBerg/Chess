@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Schack {
     class Bishop : Piece {
-        public Bishop(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter) {
+        public Bishop(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray) {
         }
 
         public override void ActualChecker(int pos, bool lfs) {
@@ -206,6 +206,38 @@ namespace Schack {
                 }
             }
         }
-       
+        public override string toString() {
+            return "Bishop";
+        }
+        public override void CheckPath(int pos) {
+            for (int i = 0; i < diagUpRight(pos, false); i++) {
+                if (Game1.isWho[pos - 7 * i] != null && Game1.isWho[pos - 7 * i] is King && Game1.isWho[pos - 7 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos - 7 * j] = true;
+                    }
+                }
+            }
+            for (int i = 0; i < diagDownLeft(pos, false); i++) {
+                if (Game1.isWho[pos + 7 * i] != null && Game1.isWho[pos + 7 * i] is King && Game1.isWho[pos + 7 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos + 7 * j] = true;
+                    }
+                }
+            }
+            for (int i = 0; i < diagUpLeft(pos, false); i++) {
+                if (Game1.isWho[pos - 9 * i] != null && Game1.isWho[pos - 9 * i] is King && Game1.isWho[pos - 9 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos - 9 * j] = true;
+                    }
+                }
+            }
+            for (int i = 0; i < diagDownRight(pos, false); i++) {
+                if (Game1.isWho[pos + 9 * i] != null && Game1.isWho[pos + 9 * i] is King && Game1.isWho[pos + 9 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos + 9 * j] = true;
+                    }
+                }
+            }
+        }
     }
 }

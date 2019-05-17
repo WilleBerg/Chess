@@ -10,7 +10,7 @@ namespace Schack
 {
     class Rook : Piece
     {
-        public Rook(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter)
+        public Rook(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
         }
 
@@ -193,6 +193,39 @@ namespace Schack
                         for (int j = 0; j < i; j++) {
                             Game1.shackArray[pos + 8 * j] = true;
                         } 
+                    }
+                }
+            }
+        }
+        public override string toString() {
+            return "Rook";
+        }
+        public override void CheckPath(int pos) {
+            for (int i = 0; i < widthLeft(pos, false); i++) {
+                if (Game1.isWho[pos - 1 - i] != null && Game1.isWho[pos - 1 - i] is King && Game1.isWho[pos - 1 - i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos - 1 - j] = true;
+                    }
+                }
+            }
+            for (int i = 0; i < widthRight(pos, false); i++) {
+                if (Game1.isWho[pos + 1 + i] != null && Game1.isWho[pos + 1 + i] is King && Game1.isWho[pos + 1 + i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos + 1 + j] = true;
+                    }
+                }
+            }
+            for (int i = 1; i < heightUp(pos, false); i++) {
+                if (Game1.isWho[pos - 8 * i] != null && Game1.isWho[pos - 8 * i] is King && Game1.isWho[pos - 8 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos - 8 * j] = true;
+                    }
+                }
+            }
+            for (int i = 1; i < heightDown(pos, false); i++) {
+                if (Game1.isWho[pos + 8 * i] != null && Game1.isWho[pos + 8 * i] is King && Game1.isWho[pos + 8 * i].isWhite != isWhite) {
+                    for (int j = 0; j < i; j++) {
+                        checkArray[pos + 8 * j] = true;
                     }
                 }
             }

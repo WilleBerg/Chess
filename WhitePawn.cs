@@ -11,7 +11,7 @@ namespace Schack
     class WhitePawn : Pawn
     {
 
-        public WhitePawn(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter)
+        public WhitePawn(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
             isFirstMove = true;
         }
@@ -71,9 +71,7 @@ namespace Schack
                 if (Game1.isWho[pos - 7] != null && Game1.isWho[pos - 7] is King)
                 {
                     schack[pos] = true;
-                    if (checkCounter == 0) {
-                        Game1.shackArray[pos - 7] = true; 
-                    }
+                    
                 }
             }
             if (pos - 9 >= 0 && pos % 8 != 0 && Game1.isTaken[pos - 9] == true && Game1.isWho[pos - 9].isWhite != isWhite)
@@ -81,11 +79,26 @@ namespace Schack
                 if (Game1.isWho[pos - 9] != null && Game1.isWho[pos - 9] is King)
                 {
                     schack[pos] = true;
-                    if (checkCounter == 0) {
-                        Game1.shackArray[pos - 9] = true; 
-                    }
+                    
                 }
             }
+        }
+
+        public override void CheckPath(int pos) {
+            if (pos - 7 >= 0 && pos % 8 != 7 && Game1.isTaken[pos - 7] == true && Game1.isWho[pos - 7].isWhite != isWhite) {
+                if (Game1.isWho[pos - 7] != null && Game1.isWho[pos - 7] is King) {
+                    checkArray[pos - 7] = true;
+                }
+            }
+            if (pos - 9 >= 0 && pos % 8 != 0 && Game1.isTaken[pos - 9] == true && Game1.isWho[pos - 9].isWhite != isWhite) {
+                if (Game1.isWho[pos - 9] != null && Game1.isWho[pos - 9] is King) {
+                    checkArray[pos - 9] = true;
+                }
+            }
+        }
+
+        public override string toString() {
+            return "White Pawn";
         }
     }
 

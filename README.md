@@ -6,6 +6,8 @@ TODO:
 - Discover check bug
 - New game/ Reset game
 - SchackPos Bug
-- Fix git and github
+- Fix pawn bug
+
+v1.6 - Fixed checkmate somewhat
 
 v1.5 - Added UI and Graphics class

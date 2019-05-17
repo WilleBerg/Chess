@@ -10,7 +10,7 @@ namespace Schack
 {
     class Knight : Piece
     {
-        public Knight(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter)
+        public Knight(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
         }
 
@@ -196,58 +196,63 @@ namespace Schack
             if (UpLeftSecond(pos, false) && Game1.isWho[pos - 17] != null && Game1.isWho[pos - 17] is King && Game1.isWho[pos - 17].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos - 17] = true; 
-                }
             }
             if (UpLeftFirst(pos, false) && Game1.isWho[pos - 10] != null && Game1.isWho[pos - 10] is King && Game1.isWho[pos - 10].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos - 10] = true; 
-                }
             }
             if (UpRightFirst(pos, false) && Game1.isWho[pos - 6] != null && Game1.isWho[pos - 6] is King && Game1.isWho[pos - 6].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos - 6] = true; 
-                }
             }
             if (DownRightFirst(pos, false) && Game1.isWho[pos + 10] != null && Game1.isWho[pos + 10] is King && Game1.isWho[pos + 10].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos + 10] = true; 
-                }
             }
             if (UpRightSecond(pos, false) && Game1.isWho[pos - 15] != null && Game1.isWho[pos - 15] is King && Game1.isWho[pos - 15].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos - 15] = true; 
-                }
             }
             if (DownRightSecond(pos, false) && Game1.isWho[pos + 17] != null && Game1.isWho[pos + 17] is King && Game1.isWho[pos + 17].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos + 17] = true; 
-                }
             }
             if (DownLeftFirst(pos, false) && Game1.isWho[pos + 6] != null && Game1.isWho[pos + 6] is King && Game1.isWho[pos + 6].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos + 6] = true; 
-                }
             }
             if (DownLeftSecond(pos, false) && Game1.isWho[pos + 15] != null && Game1.isWho[pos + 15] is King && Game1.isWho[pos + 15].isWhite != isWhite)
             {
                 schack[pos] = true;
-                if (checkCounter == 0) {
-                    Game1.shackArray[pos + 15] = true; 
-                }
+            }
+        }
+        public override string toString() {
+            return "Knight";
+        }
+        public override void CheckPath(int pos) {
+            if (UpLeftSecond(pos, false) && Game1.isWho[pos - 17] != null && Game1.isWho[pos - 17] is King && Game1.isWho[pos - 17].isWhite != isWhite) {
+                checkArray[pos - 17] = true;
+            }
+            if (UpLeftFirst(pos, false) && Game1.isWho[pos - 10] != null && Game1.isWho[pos - 10] is King && Game1.isWho[pos - 10].isWhite != isWhite) {
+                checkArray[pos - 10] = true;
+            }
+            if (UpRightFirst(pos, false) && Game1.isWho[pos - 6] != null && Game1.isWho[pos - 6] is King && Game1.isWho[pos - 6].isWhite != isWhite) {
+                checkArray[pos - 6] = true;
+            }
+            if (DownRightFirst(pos, false) && Game1.isWho[pos + 10] != null && Game1.isWho[pos + 10] is King && Game1.isWho[pos + 10].isWhite != isWhite) {
+                checkArray[pos + 10] = true;
+            }
+            if (UpRightSecond(pos, false) && Game1.isWho[pos - 15] != null && Game1.isWho[pos - 15] is King && Game1.isWho[pos - 15].isWhite != isWhite) {
+                checkArray[pos - 15] = true;
+            }
+            if (DownRightSecond(pos, false) && Game1.isWho[pos + 17] != null && Game1.isWho[pos + 17] is King && Game1.isWho[pos + 17].isWhite != isWhite) {
+                checkArray[pos + 17] = true;
+            }
+            if (DownLeftFirst(pos, false) && Game1.isWho[pos + 6] != null && Game1.isWho[pos + 6] is King && Game1.isWho[pos + 6].isWhite != isWhite) {
+                checkArray[pos + 6] = true;
+            }
+            if (DownLeftSecond(pos, false) && Game1.isWho[pos + 15] != null && Game1.isWho[pos + 15] is King && Game1.isWho[pos + 15].isWhite != isWhite) {
+                checkArray[pos + 15] = true;
             }
         }
     }

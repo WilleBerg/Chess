@@ -78,6 +78,7 @@ namespace Schack {
         List<string> isTakenString = new List<string>();
         public static bool exitGame = false;
         public static int runda = 0;
+        public static bool newRound = true;
 
         public static bool[] shackArray = new bool[64];
 
@@ -90,18 +91,6 @@ namespace Schack {
 
 
         //Meny Hitboxes --------------------------------------------------------
-        /*
-        public static Rectangle playButton = new Rectangle(500, 87 * 2, 255, 66);
-        public static Rectangle settingRec = new Rectangle(500, 87 * 3, 255, 66);
-        public static Rectangle debugRec = new Rectangle(500, 87 * 2, 255, 66);
-        public static Rectangle backRec = new Rectangle(500, 87 * 3, 255, 66);
-        public static Rectangle exitRec = new Rectangle(500, 87 * 4, 255, 66);
-        public static Rectangle exitRec2 = new Rectangle(560 - 42, 440 - 39, 250, 61);
-        public static Rectangle backRec2 = new Rectangle(913, 87 * 7 + 50, (int)255 / 2, (int)66 / 2);
-        public static Rectangle disableRec = new Rectangle(500, 87 * 2, 255, 66);
-        public static Rectangle newGameRec = new Rectangle(258, 440 - 39, 250, 61);
-        */
-        //
 
         // Rectangle wqHitbox = new Rectangle(87, 87, 87, 87);
 
@@ -217,22 +206,38 @@ namespace Schack {
         protected override void UnloadContent() {
             //inget
         }
+        public static int getPos(Piece a) {
+            return getBoard((int)a.tempPos.X, (int)a.tempPos.Y);
+        }
         protected override void Update(GameTime gameTime)                                                                                       //update !!!!!!!!!!!!!!
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
             MouseUpdate();
             if (exitGame) {
                 Exit();
             }
-            //for (int i = 0; i < activePiece.Count; i++) {
-            //    activePiece[i].am = new bool[64];
-            //    activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
-            //}
             if (runda % 2 != 0) {
+                if (newRound) {
+                    for (int i = 0; i < activePiece.Count; i++) {
+                        activePiece[i].checkArray = new bool[64];
+                        if (!(activePiece[i] is King) && !activePiece[i].isDead) {
+                            activePiece[i].CheckPath(getPos(activePiece[i]));
+                        }
+                    }
+                    newRound = false;
+                }
                 bk.SchackMatt();
             } else if (runda % 2 == 0) {
+                if (newRound) {
+                    for (int i = 0; i < activePiece.Count; i++) {
+                        activePiece[i].checkArray = new bool[64];
+                        if (!(activePiece[i] is King) && !activePiece[i].isDead) {
+                            activePiece[i].CheckPath(getPos(activePiece[i]));
+                        }
+                    }
+                    newRound = false;
+                }
                 wk.SchackMatt();
             }
 
@@ -253,55 +258,55 @@ namespace Schack {
         private void Load() {
             bool[] tmp = new bool[64];
             //Kings
-            wk = new King(Content.Load<Texture2D>("wk"), wkHitbox, new Vector2(87 * 4, 87 * 7), new Vector2(87 * 4, 87 * 7), true, tmp, tmp, false, 0);
-            bk = new King(Content.Load<Texture2D>("bk"), bkHitbox, new Vector2(87 * 4, 0), new Vector2(87 * 4, 0), false, tmp, tmp, false, 0);
+            wk = new King(Content.Load<Texture2D>("wk"), wkHitbox, new Vector2(87 * 4, 87 * 7), new Vector2(87 * 4, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            bk = new King(Content.Load<Texture2D>("bk"), bkHitbox, new Vector2(87 * 4, 0), new Vector2(87 * 4, 0), false, tmp, tmp, false, 0, tmp);
 
 
             //Queens
-            wQ = new Queen(Content.Load<Texture2D>("wq"), wQHitbox, new Vector2(87 * 3, 87 * 7), new Vector2(87 * 3, 87 * 7), true, tmp, tmp, false, 0);
-            bQ = new Queen(Content.Load<Texture2D>("bq"), bQHitbox, new Vector2(87 * 3, 0), new Vector2(87 * 3, 0), false, tmp, tmp, false, 0);
-            wQ2 = new Queen(Content.Load<Texture2D>("wq"), wQ2Hitbox, new Vector2(87 * 88, 87 * 99), new Vector2(87 * 88, 87 * 99), true, tmp, tmp, false, 0);
-            bQ2 = new Queen(Content.Load<Texture2D>("bq"), bQ2Hitbox, new Vector2(87 * 88, 88), new Vector2(87 * 88, 88), false, tmp, tmp, false, 0);
+            wQ = new Queen(Content.Load<Texture2D>("wq"), wQHitbox, new Vector2(87 * 3, 87 * 7), new Vector2(87 * 3, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            bQ = new Queen(Content.Load<Texture2D>("bq"), bQHitbox, new Vector2(87 * 3, 0), new Vector2(87 * 3, 0), false, tmp, tmp, false, 0, tmp);
+            wQ2 = new Queen(Content.Load<Texture2D>("wq"), wQ2Hitbox, new Vector2(87 * 88, 87 * 99), new Vector2(87 * 88, 87 * 99), true, tmp, tmp, false, 0, tmp);
+            bQ2 = new Queen(Content.Load<Texture2D>("bq"), bQ2Hitbox, new Vector2(87 * 88, 88), new Vector2(87 * 88, 88), false, tmp, tmp, false, 0, tmp);
 
             //White rooks
-            wR1 = new Rook(Content.Load<Texture2D>("wr"), wR1Hitbox, new Vector2(87 * 0, 87 * 0), new Vector2(87 * 0, 87 * 7), true, tmp, tmp, false, 0);
-            wR2 = new Rook(Content.Load<Texture2D>("wr"), wR2Hitbox, new Vector2(87 * 7, 87 * 0), new Vector2(87 * 7, 87 * 7), true, tmp, tmp, false, 0);
+            wR1 = new Rook(Content.Load<Texture2D>("wr"), wR1Hitbox, new Vector2(87 * 0, 87 * 0), new Vector2(87 * 0, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            wR2 = new Rook(Content.Load<Texture2D>("wr"), wR2Hitbox, new Vector2(87 * 7, 87 * 0), new Vector2(87 * 7, 87 * 7), true, tmp, tmp, false, 0, tmp);
 
             //Black rooks
-            bR1 = new Rook(Content.Load<Texture2D>("br"), bR1Hitbox, new Vector2(87 * 0, 87 * 0), new Vector2(87 * 0, 87 * 0), false, tmp, tmp, false, 0);
-            bR2 = new Rook(Content.Load<Texture2D>("br"), bR2Hitbox, new Vector2(87 * 7, 87 * 0), new Vector2(87 * 7, 87 * 0), false, tmp, tmp, false, 0);
+            bR1 = new Rook(Content.Load<Texture2D>("br"), bR1Hitbox, new Vector2(87 * 0, 87 * 0), new Vector2(87 * 0, 87 * 0), false, tmp, tmp, false, 0, tmp);
+            bR2 = new Rook(Content.Load<Texture2D>("br"), bR2Hitbox, new Vector2(87 * 7, 87 * 0), new Vector2(87 * 7, 87 * 0), false, tmp, tmp, false, 0, tmp);
 
             //White Pawns
-            wp1 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox1, new Vector2(87 * 0, 87 * 6), new Vector2(87 * 0, 87 * 6), true, tmp, tmp, false, 0);
-            wp2 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox2, new Vector2(87 * 1, 87 * 6), new Vector2(87 * 1, 87 * 6), true, tmp, tmp, false, 0);
-            wp3 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox3, new Vector2(87 * 2, 87 * 6), new Vector2(87 * 2, 87 * 6), true, tmp, tmp, false, 0);
-            wp4 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox4, new Vector2(87 * 3, 87 * 6), new Vector2(87 * 3, 87 * 6), true, tmp, tmp, false, 0);
-            wp5 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox5, new Vector2(87 * 4, 87 * 6), new Vector2(87 * 4, 87 * 6), true, tmp, tmp, false, 0);
-            wp6 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox6, new Vector2(87 * 5, 87 * 6), new Vector2(87 * 5, 87 * 6), true, tmp, tmp, false, 0);
-            wp7 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox7, new Vector2(87 * 6, 87 * 6), new Vector2(87 * 6, 87 * 6), true, tmp, tmp, false, 0);
-            wp8 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox8, new Vector2(87 * 7, 87 * 6), new Vector2(87 * 7, 87 * 6), true, tmp, tmp, false, 0);
+            wp1 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox1, new Vector2(87 * 0, 87 * 6), new Vector2(87 * 0, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp2 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox2, new Vector2(87 * 1, 87 * 6), new Vector2(87 * 1, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp3 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox3, new Vector2(87 * 2, 87 * 6), new Vector2(87 * 2, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp4 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox4, new Vector2(87 * 3, 87 * 6), new Vector2(87 * 3, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp5 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox5, new Vector2(87 * 4, 87 * 6), new Vector2(87 * 4, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp6 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox6, new Vector2(87 * 5, 87 * 6), new Vector2(87 * 5, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp7 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox7, new Vector2(87 * 6, 87 * 6), new Vector2(87 * 6, 87 * 6), true, tmp, tmp, false, 0, tmp);
+            wp8 = new WhitePawn(Content.Load<Texture2D>("wp"), wpHitbox8, new Vector2(87 * 7, 87 * 6), new Vector2(87 * 7, 87 * 6), true, tmp, tmp, false, 0, tmp);
 
             //Black Pawns
-            bp1 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox1, new Vector2(87 * 0, 87 * 1), new Vector2(87 * 0, 87 * 1), false, tmp, tmp, false, 0);
-            bp2 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox2, new Vector2(87 * 1, 87 * 1), new Vector2(87 * 1, 87 * 1), false, tmp, tmp, false, 0);
-            bp3 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox3, new Vector2(87 * 2, 87 * 1), new Vector2(87 * 2, 87 * 1), false, tmp, tmp, false, 0);
-            bp4 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox4, new Vector2(87 * 3, 87 * 1), new Vector2(87 * 3, 87 * 1), false, tmp, tmp, false, 0);
-            bp5 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox5, new Vector2(87 * 4, 87 * 1), new Vector2(87 * 4, 87 * 1), false, tmp, tmp, false, 0);
-            bp6 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox6, new Vector2(87 * 5, 87 * 1), new Vector2(87 * 5, 87 * 1), false, tmp, tmp, false, 0);
-            bp7 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox7, new Vector2(87 * 6, 87 * 1), new Vector2(87 * 6, 87 * 1), false, tmp, tmp, false, 0);
-            bp8 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox8, new Vector2(87 * 7, 87 * 1), new Vector2(87 * 7, 87 * 1), false, tmp, tmp, false, 0);
+            bp1 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox1, new Vector2(87 * 0, 87 * 1), new Vector2(87 * 0, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp2 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox2, new Vector2(87 * 1, 87 * 1), new Vector2(87 * 1, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp3 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox3, new Vector2(87 * 2, 87 * 1), new Vector2(87 * 2, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp4 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox4, new Vector2(87 * 3, 87 * 1), new Vector2(87 * 3, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp5 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox5, new Vector2(87 * 4, 87 * 1), new Vector2(87 * 4, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp6 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox6, new Vector2(87 * 5, 87 * 1), new Vector2(87 * 5, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp7 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox7, new Vector2(87 * 6, 87 * 1), new Vector2(87 * 6, 87 * 1), false, tmp, tmp, false, 0, tmp);
+            bp8 = new BlackPawn(Content.Load<Texture2D>("bp"), bpHitbox8, new Vector2(87 * 7, 87 * 1), new Vector2(87 * 7, 87 * 1), false, tmp, tmp, false, 0, tmp);
 
             //Bishops
-            wB = new Bishop(Content.Load<Texture2D>("wb"), wBHitbox, new Vector2(87 * 2, 87 * 7), new Vector2(87 * 2, 87 * 7), true, tmp, tmp, false, 0);
-            wB2 = new Bishop(Content.Load<Texture2D>("wb"), wBHitbox2, new Vector2(87 * 5, 87 * 7), new Vector2(87 * 5, 87 * 7), true, tmp, tmp, false, 0);
-            bB = new Bishop(Content.Load<Texture2D>("bb"), bBHitbox, new Vector2(87 * 2, 87 * 0), new Vector2(87 * 2, 87 * 0), false, tmp, tmp, false, 0);
-            bB2 = new Bishop(Content.Load<Texture2D>("bb"), bBHitbox2, new Vector2(87 * 5, 87 * 0), new Vector2(87 * 5, 87 * 0), false, tmp, tmp, false, 0);
+            wB = new Bishop(Content.Load<Texture2D>("wb"), wBHitbox, new Vector2(87 * 2, 87 * 7), new Vector2(87 * 2, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            wB2 = new Bishop(Content.Load<Texture2D>("wb"), wBHitbox2, new Vector2(87 * 5, 87 * 7), new Vector2(87 * 5, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            bB = new Bishop(Content.Load<Texture2D>("bb"), bBHitbox, new Vector2(87 * 2, 87 * 0), new Vector2(87 * 2, 87 * 0), false, tmp, tmp, false, 0, tmp);
+            bB2 = new Bishop(Content.Load<Texture2D>("bb"), bBHitbox2, new Vector2(87 * 5, 87 * 0), new Vector2(87 * 5, 87 * 0), false, tmp, tmp, false, 0, tmp);
 
             //Knights (Horses)
-            wh = new Knight(Content.Load<Texture2D>("wh"), whHitbox, new Vector2(87 * 1, 87 * 7), new Vector2(87 * 1, 87 * 7), true, tmp, tmp, false, 0);
-            wh2 = new Knight(Content.Load<Texture2D>("wh"), whHitbox2, new Vector2(87 * 6, 87 * 7), new Vector2(87 * 6, 87 * 7), true, tmp, tmp, false, 0);
-            bh = new Knight(Content.Load<Texture2D>("bh"), bhHitbox, new Vector2(87 * 1, 87 * 0), new Vector2(87 * 1, 87 * 0), false, tmp, tmp, false, 0);
-            bh2 = new Knight(Content.Load<Texture2D>("bh"), bhHitbox2, new Vector2(87 * 6, 87 * 0), new Vector2(87 * 6, 87 * 0), false, tmp, tmp, false, 0);
+            wh = new Knight(Content.Load<Texture2D>("wh"), whHitbox, new Vector2(87 * 1, 87 * 7), new Vector2(87 * 1, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            wh2 = new Knight(Content.Load<Texture2D>("wh"), whHitbox2, new Vector2(87 * 6, 87 * 7), new Vector2(87 * 6, 87 * 7), true, tmp, tmp, false, 0, tmp);
+            bh = new Knight(Content.Load<Texture2D>("bh"), bhHitbox, new Vector2(87 * 1, 87 * 0), new Vector2(87 * 1, 87 * 0), false, tmp, tmp, false, 0, tmp);
+            bh2 = new Knight(Content.Load<Texture2D>("bh"), bhHitbox2, new Vector2(87 * 6, 87 * 0), new Vector2(87 * 6, 87 * 0), false, tmp, tmp, false, 0, tmp);
 
             //-----------------------------------------------------------------
 
@@ -477,12 +482,11 @@ namespace Schack {
                     //        isTakenString[tmp] = $"true {tmp}";
                     //    }
                     //}
-                    if (shackArray[tmp] == false) {
-                        isTakenString[tmp] = $"false {tmp}";
-                    } else {
-                        isTakenString[tmp] = $"true {tmp}";
-                    }
-
+                    //if (shackArray[tmp] == false) {
+                    //    isTakenString[tmp] = $"false {tmp}";
+                    //} else {
+                    //    isTakenString[tmp] = $"true {tmp}";
+                    //}
                     //if (shackArray[tmp] == false) {
                     //    isTakenString[tmp] = $"false {tmp}";
                     //} else {
@@ -535,7 +539,9 @@ namespace Schack {
                 if (activePiece[i].rectangle.Contains(mus.Position) && (isHolding == activePiece[i] || mouseIsHolding == false)) {
                     isHolding = activePiece[i];
                     for (int j = 0; j < 64; j++) {
-                        isTakenString[j] = isHolding.am[j].ToString();
+                        if (isHolding.am != null) {
+                            isTakenString[j] = isHolding.am[j].ToString(); 
+                        }
                     }
                     text2 = getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y).ToString();
                     PieceUpdate(activePiece[i], getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y));
@@ -547,6 +553,7 @@ namespace Schack {
             ap.isDead = true;
             ap.schack = new bool[64];
             ap.am = new bool[64];
+            ap.checkArray = new bool[64];
             if (ap.isWhite == true) {
                 float a = (float)rnd.NextDouble() * 1.2F + 0.3F;
                 float b = (float)rnd.NextDouble() * 2.5F + 8;
@@ -596,11 +603,13 @@ namespace Schack {
                         }
                         isWho[i] = ap;
                         isWho[oNmr] = null;
+                        newRound = true;
                         runda++;
                         shackArray = new bool[64];
                     } else if (ap.allowedMoves[i] == true && isTaken[i] && isWho[i].isWhite != ap.isWhite) {
                         placingPiece.Play();
                         Seize(isWho[i]);
+                        
                         isTaken[i] = true;
                         isTaken[oNmr] = false;
                         ap.rectangle.X = boardList[i].X;
@@ -617,6 +626,7 @@ namespace Schack {
                         }
                         isWho[i] = ap;
                         isWho[oNmr] = null;
+                        newRound = true;
                         runda++;
                         shackArray = new bool[64];
                     } else if (boardList[i].Contains(ap.vector) && !mouseIsHolding && i == oNmr) {
@@ -652,11 +662,13 @@ namespace Schack {
         /// </summary>
         /// <param name="a">The piece that has its move simulated</param>
         /// <returns></returns>
-        public static bool SimulatedMove(Piece a, int i) {
+        public static bool SimulatedMove(Piece a, Piece b, int i) {
             if (a is King) {
                 return true;
             }
-            if (a.am[i] && shackArray[i] && !(isWho[i] is King)) {
+            a.ActualChecker(getPos(a), false);
+            if (a.am[i] && b.checkArray[i] && !(isWho[i] is King)) {
+                debugger.Add("asdasdasd");
                 return true;
             } else if (checkPieces.Contains(a) && i == getBoard((int)theChecker.tempPos.X, (int)theChecker.tempPos.Y)) {
                 return true;
@@ -687,18 +699,20 @@ namespace Schack {
                 bool seizeAble = false;
                 Piece curr = null;
                 for (int i = 0; i < activePiece.Count; i++) {
-                    if (!activePiece[i].isWhite) {
-                        activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+                    if (!activePiece[i].isWhite && !activePiece[i].isDead) {
+                        //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
                         if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !cantSeize(a, activePiece[i])) {
                             aa = true;
+                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
                         } else if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && cantSeize(a, activePiece[i])) {
                             aa = true;
                             seizeAble = true;
                             curr = activePiece[i];
+                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
                         }
                     }
                 }
-                a.ActualChecker(getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
+                a.ActualChecker(getPos(a), false);
                 for (int i = 0; i < 8 * 8; i++) {
                     if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                         if (a.Checker(boardList[i]) && !aa) {
@@ -716,7 +730,7 @@ namespace Schack {
             } else if (runda % 2 == 0 && a.isWhite == true && whiteCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
                     if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
-                        if (SimulatedMove(a, i) || a is King) {
+                        if (SimulatedMove(a, theChecker, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;
                                 spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
@@ -734,14 +748,16 @@ namespace Schack {
                 bool seizeAble = false;
                 Piece curr = null;
                 for (int i = 0; i < activePiece.Count; i++) {
-                    if (activePiece[i].isWhite) {
-                        activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+                    if (activePiece[i].isWhite && !activePiece[i].isDead) {
+                        //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
                         if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !cantSeize(a, activePiece[i])) {
                             aa = true;
-                        } else if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && cantSeize(a, activePiece[i])) {
+                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
+                        } else if (activePiece[i].schack[getPos(a)] && cantSeize(a, activePiece[i])) {
                             aa = true;
                             seizeAble = true;
                             curr = activePiece[i];
+                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
                         }
                     }
                 }
@@ -767,7 +783,7 @@ namespace Schack {
             } else if (runda % 2 != 0 && a.isWhite == false && blackCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
                     if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
-                        if (SimulatedMove(a, i) || a is King) {
+                        if (SimulatedMove(a, theChecker, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;
                                 if (isWho[i] != null && isWho[i].isWhite != a.isWhite) {
