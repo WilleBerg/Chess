@@ -8,3 +8,4 @@ TODO:
 - SchackPos Bug
 - Fix git and github
 
+v1.5 - Added UI and Graphics class
