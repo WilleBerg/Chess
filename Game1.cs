@@ -66,9 +66,10 @@ namespace Schack {
         BlackPawn bp7;
         BlackPawn bp8;
 
-        SoundEffect placingPiece;
+        public static SoundEffect placingPiece;
 
-        UI ui = new UI();
+        
+        Core core = new Core();
 
         public static List<Rectangle> boardList = new List<Rectangle>();
         public static List<Piece> activePiece = new List<Piece>();
@@ -154,14 +155,13 @@ namespace Schack {
 
         public static int scen = 1;
         public static int menuScene = 0;
-        int t = 0;
 
-        string text = "";
+        public static string text = "";
         public static List<string> debugger = new List<string>();
         public static string text2 = "";
 
         public static bool debuggingMode = false;
-        bool mouseIsHolding = false;
+        public static bool mouseIsHolding = false;
         public static bool shackMatt = false;
         public static bool vitVinst = false;
         public static bool blackCheck = false;
@@ -181,7 +181,7 @@ namespace Schack {
             graphics.PreferredBackBufferHeight = 696;
             graphics.ApplyChanges();
             IsMouseVisible = true;
-            ui.AddBoard(boardList);
+            core.ui.AddBoard(boardList);
 
 
             base.Initialize();
@@ -206,9 +206,7 @@ namespace Schack {
         protected override void UnloadContent() {
             //inget
         }
-        public static int getPos(Piece a) {
-            return getBoard((int)a.tempPos.X, (int)a.tempPos.Y);
-        }
+        
         protected override void Update(GameTime gameTime)                                                                                       //update !!!!!!!!!!!!!!
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
@@ -217,12 +215,13 @@ namespace Schack {
             if (exitGame) {
                 Exit();
             }
+            
             if (runda % 2 != 0) {
                 if (newRound) {
                     for (int i = 0; i < activePiece.Count; i++) {
                         activePiece[i].checkArray = new bool[64];
                         if (!(activePiece[i] is King) && !activePiece[i].isDead) {
-                            activePiece[i].CheckPath(getPos(activePiece[i]));
+                            activePiece[i].CheckPath(core.getPos(activePiece[i]));
                         }
                     }
                     newRound = false;
@@ -233,7 +232,7 @@ namespace Schack {
                     for (int i = 0; i < activePiece.Count; i++) {
                         activePiece[i].checkArray = new bool[64];
                         if (!(activePiece[i] is King) && !activePiece[i].isDead) {
-                            activePiece[i].CheckPath(getPos(activePiece[i]));
+                            activePiece[i].CheckPath(core.getPos(activePiece[i]));
                         }
                     }
                     newRound = false;
@@ -423,23 +422,23 @@ namespace Schack {
             switch (menuScene) {
                 //Standard menu
                 case 0:
-                    spriteBatch.Draw(playKnapp, ui.graph.playButton, Color.White);
-                    spriteBatch.Draw(settings, ui.graph.settingRec, Color.White);
-                    spriteBatch.Draw(exit, ui.graph.exitRec, Color.White);
-                    ui.MenuButtons();
+                    spriteBatch.Draw(playKnapp, core.ui.graph.playButton, Color.White);
+                    spriteBatch.Draw(settings, core.ui.graph.settingRec, Color.White);
+                    spriteBatch.Draw(exit, core.ui.graph.exitRec, Color.White);
+                    core.ui.MenuButtons();
                     break;
                 //Settings menu
                 case 1:
                     if (debuggingMode == true) {
-                        spriteBatch.Draw(disableDebug, ui.graph.disableRec, Color.White);
+                        spriteBatch.Draw(disableDebug, core.ui.graph.disableRec, Color.White);
                     } else {
-                        spriteBatch.Draw(debug, ui.graph.debugRec, Color.White);
+                        spriteBatch.Draw(debug, core.ui.graph.debugRec, Color.White);
                     }
-                    spriteBatch.Draw(back, ui.graph.backRec, Color.White);
+                    spriteBatch.Draw(back, core.ui.graph.backRec, Color.White);
                     if (debuggingMode == true && menuScene == 1) {
-                        ui.DisableButton();
+                        core.ui.DisableButton();
                     } else {
-                        ui.SettingsButtons();
+                        core.ui.SettingsButtons();
                     }
                     break;
             }
@@ -469,29 +468,6 @@ namespace Schack {
             int tmp = 0;
             for (int i = 0; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    //if (runda % 2 == 0) {
-                    //    if (!wk.am[tmp]) {
-                    //        isTakenString[tmp] = $"false {tmp}";
-                    //    } else {
-                    //        isTakenString[tmp] = $"true {tmp}";
-                    //    }
-                    //} else if (runda % 2 != 0) {
-                    //    if (!bk.am[tmp]) {
-                    //        isTakenString[tmp] = $"false {tmp}";
-                    //    } else {
-                    //        isTakenString[tmp] = $"true {tmp}";
-                    //    }
-                    //}
-                    //if (shackArray[tmp] == false) {
-                    //    isTakenString[tmp] = $"false {tmp}";
-                    //} else {
-                    //    isTakenString[tmp] = $"true {tmp}";
-                    //}
-                    //if (shackArray[tmp] == false) {
-                    //    isTakenString[tmp] = $"false {tmp}";
-                    //} else {
-                    //    isTakenString[tmp] = $"true {tmp}";
-                    //}
                     if (debuggingMode) {
                         spriteBatch.DrawString(arial, isTakenString[tmp], new Vector2(j * 87, i * 87), Color.White);
                     }
@@ -516,23 +492,23 @@ namespace Schack {
                     spriteBatch.DrawString(arial, debugger[i], new Vector2(750, 200 + i * 15), Color.Black);
                 }
             }
-            spriteBatch.Draw(back, ui.graph.backRec2, Color.White);
+            spriteBatch.Draw(back, core.ui.graph.backRec2, Color.White);
             if (shackMatt && vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(whitewins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(newGame, ui.graph.newGameRec, Color.White);
-                spriteBatch.Draw(exit, ui.graph.exitRec2, Color.White);
+                spriteBatch.Draw(newGame, core.ui.graph.newGameRec, Color.White);
+                spriteBatch.Draw(exit, core.ui.graph.exitRec2, Color.White);
                 debugger.Add("Game1 => Line 455 \n");
             } else if (shackMatt && !vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(blackwins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(exit, ui.graph.exitRec2, Color.White);
-                spriteBatch.Draw(newGame, ui.graph.newGameRec, Color.White);
+                spriteBatch.Draw(exit, core.ui.graph.exitRec2, Color.White);
+                spriteBatch.Draw(newGame, core.ui.graph.newGameRec, Color.White);
                 debugger.Add("Game1 => Line 457 \n");
             }
             spriteBatch.End();
         }
-        private void MouseUpdate() {
+        public void MouseUpdate() {
             gammalMus = mus;
             mus = Mouse.GetState();
             for (int i = 0; i < activePiece.Count; i++) {
@@ -543,156 +519,34 @@ namespace Schack {
                             isTakenString[j] = isHolding.am[j].ToString(); 
                         }
                     }
-                    text2 = getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y).ToString();
-                    PieceUpdate(activePiece[i], getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y));
+                    text2 = core.getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y).ToString();
+                    core.PieceUpdate(activePiece[i], core.getPos(activePiece[i]));
                 }
             }
-            ui.ForMouseUpdate();
+            core.ui.ForMouseUpdate();
         }
-        void Seize(Piece ap) {
-            ap.isDead = true;
-            ap.schack = new bool[64];
-            ap.am = new bool[64];
-            ap.checkArray = new bool[64];
-            if (ap.isWhite == true) {
-                float a = (float)rnd.NextDouble() * 1.2F + 0.3F;
-                float b = (float)rnd.NextDouble() * 2.5F + 8;
-                ap.vector.X = 87 * b;
-                ap.vector.Y = 87 * a;
-                ap.rectangle.X = (int)ap.vector.X;
-                ap.rectangle.Y = (int)ap.vector.Y;
-
-            } else {
-                float a = (float)rnd.NextDouble() * 2 + 5;
-                float b = (float)rnd.NextDouble() * 2.5F + 8;
-                ap.vector.X = 87 * b;
-                ap.vector.Y = 87 * a;
-                ap.rectangle.X = (int)ap.vector.X;
-                ap.rectangle.Y = (int)ap.vector.Y;
-            }
-        }
-        void PieceUpdate(Piece ap, int oNmr) {  // Activepiece originalNumber
-
-            if (ap.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
-                ap.rectangle.X = mus.X - ap.rectangle.Width / 2;
-                ap.rectangle.Y = mus.Y - ap.rectangle.Height / 2;
-                mouseIsHolding = true;
-            } else {
-                mouseIsHolding = false;
-            }
-            for (int i = 0; i < 8 * 8; i++) {
-                if (boardList[i].Contains(mus.Position)) {
-                    text = $"{boardList[i]}{ap.vector}";
-                }
-                if (boardList[i].Contains(ap.vector) && !mouseIsHolding) {
-                    if (ap.allowedMoves[i] == true && !isTaken[i]) {
-                        placingPiece.Play();
-                        isTaken[i] = true;
-                        isTaken[oNmr] = false;
-                        ap.rectangle.X = boardList[i].X;
-                        ap.rectangle.Y = boardList[i].Y;
-                        ap.tempPos.X = ap.rectangle.X;
-                        ap.tempPos.Y = ap.rectangle.Y;
-                        for (int j = 0; j < 64; j++) {
-                            ap.allowedMoves[j] = false;
-                        }
-                        for (int j = 0; j < activePiece.Count; j++) {
-                            if (activePiece[j].isWhite == ap.isWhite) {
-                                activePiece[j].checkCounter = 0;
-                            }
-                        }
-                        isWho[i] = ap;
-                        isWho[oNmr] = null;
-                        newRound = true;
-                        runda++;
-                        shackArray = new bool[64];
-                    } else if (ap.allowedMoves[i] == true && isTaken[i] && isWho[i].isWhite != ap.isWhite) {
-                        placingPiece.Play();
-                        Seize(isWho[i]);
-                        
-                        isTaken[i] = true;
-                        isTaken[oNmr] = false;
-                        ap.rectangle.X = boardList[i].X;
-                        ap.rectangle.Y = boardList[i].Y;
-                        ap.tempPos.X = ap.rectangle.X;
-                        ap.tempPos.Y = ap.rectangle.Y;
-                        for (int j = 0; j < 64; j++) {
-                            ap.allowedMoves[j] = false;
-                        }
-                        for (int j = 0; j < activePiece.Count; j++) {
-                            if (activePiece[j].isWhite == ap.isWhite) {
-                                activePiece[j].checkCounter = 0; 
-                            }
-                        }
-                        isWho[i] = ap;
-                        isWho[oNmr] = null;
-                        newRound = true;
-                        runda++;
-                        shackArray = new bool[64];
-                    } else if (boardList[i].Contains(ap.vector) && !mouseIsHolding && i == oNmr) {
-                        isTaken[i] = true;
-                        ap.rectangle.X = boardList[i].X;
-                        ap.rectangle.Y = boardList[i].Y;
-                        ap.tempPos.X = ap.rectangle.X;
-                        ap.tempPos.Y = ap.rectangle.Y;
-                        for (int j = 0; j < 64; j++) {
-                            ap.allowedMoves[j] = false;
-                        }
-                    } else {
-                        ap.rectangle.X = boardList[oNmr].X;
-                        ap.rectangle.Y = boardList[oNmr].Y;
-                        ap.tempPos.X = ap.rectangle.X;
-                        ap.tempPos.Y = ap.rectangle.Y;
-                        for (int j = 0; j < 64; j++) {
-                            ap.allowedMoves[j] = false;
-                        }
-
-                    }
-
-                }
-            }
-            ap.vector.X = ap.rectangle.X + ap.rectangle.Width / 2;
-            ap.vector.Y = ap.rectangle.Y + ap.rectangle.Height / 2;
-        }
-        public static int getBoard(int x, int y) {
-            return (x / 87) + 8 * (y / 87);
-        }
+        
         /// <summary>
         /// Returns true if move leads to the king not being in check any longer
         /// </summary>
         /// <param name="a">The piece that has its move simulated</param>
         /// <returns></returns>
         public static bool SimulatedMove(Piece a, Piece b, int i) {
+            Core thisCore = new Core();
             if (a is King) {
                 return true;
             }
-            a.ActualChecker(getPos(a), false);
+            a.ActualChecker(thisCore.getPos(a), false);
             if (a.am[i] && b.checkArray[i] && !(isWho[i] is King)) {
                 debugger.Add("asdasdasd");
                 return true;
-            } else if (checkPieces.Contains(a) && i == getBoard((int)theChecker.tempPos.X, (int)theChecker.tempPos.Y)) {
+            } else if (checkPieces.Contains(a) && i == thisCore.getBoard((int)theChecker.tempPos.X, (int)theChecker.tempPos.Y)) {
                 return true;
             }
             return false;
         }
-        bool cantSeize(Piece a, Piece b) {
-            for (int i = 0; i < a.am.Length; i++) {
-                if (a.am[i] && i == getBoard((int)b.tempPos.X, (int)b.tempPos.Y)) {
-                    return false;
-                }
-            }
-            return true;
-        }
-        int WhereSeize(Piece a, Piece b) {
-            for (int i = 0; i < a.am.Length; i++) {
-                if (a.am[i] && i == getBoard((int)b.tempPos.X, (int)b.tempPos.Y)) {
-                    return i;
-                }
-            }
-            //Should never return this
-            return 0;
-        }
         void move(Piece a) {
+            
             if (runda % 2 == 0 && a.isWhite == true && !whiteCheck) {
                 a.am = new bool[64];
                 bool aa = false;
@@ -701,10 +555,10 @@ namespace Schack {
                 for (int i = 0; i < activePiece.Count; i++) {
                     if (!activePiece[i].isWhite && !activePiece[i].isDead) {
                         //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
-                        if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !cantSeize(a, activePiece[i])) {
+                        if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } else if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && cantSeize(a, activePiece[i])) {
+                        } else if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             seizeAble = true;
                             curr = activePiece[i];
@@ -712,13 +566,13 @@ namespace Schack {
                         }
                     }
                 }
-                a.ActualChecker(getPos(a), false);
+                a.ActualChecker(core.getPos(a), false);
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
                         if (a.Checker(boardList[i]) && !aa) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        } else if (a.Checker(boardList[i]) && aa && seizeAble && WhereSeize(a, curr) == i) {
+                        } else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                         }
@@ -729,7 +583,7 @@ namespace Schack {
                 }
             } else if (runda % 2 == 0 && a.isWhite == true && whiteCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
                         if (SimulatedMove(a, theChecker, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;
@@ -750,10 +604,10 @@ namespace Schack {
                 for (int i = 0; i < activePiece.Count; i++) {
                     if (activePiece[i].isWhite && !activePiece[i].isDead) {
                         //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
-                        if (activePiece[i].schack[getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !cantSeize(a, activePiece[i])) {
+                        if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } else if (activePiece[i].schack[getPos(a)] && cantSeize(a, activePiece[i])) {
+                        } else if (activePiece[i].schack[core.getPos(a)] && core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             seizeAble = true;
                             curr = activePiece[i];
@@ -761,9 +615,9 @@ namespace Schack {
                         }
                     }
                 }
-                a.ActualChecker(getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
+                a.ActualChecker(core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
                         if (a.Checker(boardList[i]) && !aa) {
                             a.allowedMoves[i] = true;
                             if (isWho[i] != null && isWho[i].isWhite != a.isWhite) {
@@ -771,7 +625,7 @@ namespace Schack {
                             } else if (isWho[i] == null) {
                                 spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                             }
-                        } else if (a.Checker(boardList[i]) && aa && seizeAble && WhereSeize(a, curr) == i) {
+                        } else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                         }
@@ -782,7 +636,7 @@ namespace Schack {
                 }
             } else if (runda % 2 != 0 && a.isWhite == false && blackCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
                         if (SimulatedMove(a, theChecker, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;

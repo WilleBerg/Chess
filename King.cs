@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Schack
 {
-    class King : Piece
+    public class King : Piece
     {
         public bool isFirstMove;
         public King(Texture2D texture, Rectangle rectangle, Vector2 vector, Vector2 tempPos, bool isWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(texture, rectangle, vector, tempPos, isWhite, allowedMoves, am, isDead, checkCounter, checkArray)
@@ -39,7 +39,7 @@ namespace Schack
         }
         public bool SchackMatt() {
             Game1.debugger.Clear();
-            ActualChecker(Game1.getBoard((int)tempPos.X, (int)tempPos.Y), false);
+            ActualChecker(core.getBoard((int)tempPos.X, (int)tempPos.Y), false);
             bool temps = false;
             for (int i = 0; i < am.Length; i++) {
                 if (am[i]) {
@@ -51,7 +51,7 @@ namespace Schack
             int tmp = 0;
             Piece temp = null;
             for (int i = 0; i < Game1.activePiece.Count; i++) {
-                if (Game1.activePiece[i].isWhite != isWhite && !Game1.activePiece[i].isDead && Game1.activePiece[i].schack[Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y)]) {
+                if (Game1.activePiece[i].isWhite != isWhite && !Game1.activePiece[i].isDead && Game1.activePiece[i].schack[core.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y)]) {
                     tmp++;
                     temp = Game1.activePiece[i];
                     break;
@@ -60,21 +60,21 @@ namespace Schack
             Game1.debugger.Add(tmp.ToString());
             if (temp is Queen) {
                 Game1.debugger.Add("Checker is Queen ; IsWhite = " + temp.isWhite);
-                Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
-                Game1.debugger.Add("isWho = " + Game1.isWho[Game1.getPos(temp)].toString());
-                Game1.debugger.Add("isTaken = " + Game1.isTaken[Game1.getPos(temp)]);
+                Game1.debugger.Add("Checker position" + core.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("isWho = " + Game1.isWho[core.getPos(temp)].toString());
+                Game1.debugger.Add("isTaken = " + Game1.isTaken[core.getPos(temp)]);
             } else if (temp is Rook) {
                 Game1.debugger.Add("Checker is Rook ; IsWhite = " + temp.isWhite);
-                Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("Checker position" + core.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
             } else if (temp is Bishop) {
                 Game1.debugger.Add("Checker is Bishop ; IsWhite = " + temp.isWhite);
-                Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("Checker position" + core.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
             } else if (temp is Knight) {
                 Game1.debugger.Add("Checker is Knight ; IsWhite = " + temp.isWhite);
-                Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("Checker position" + core.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
             } else if (temp is WhitePawn || temp is BlackPawn) {
                 Game1.debugger.Add("Checker is Pawn ; IsWhite = " + temp.isWhite);
-                Game1.debugger.Add("Checker position" + Game1.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
+                Game1.debugger.Add("Checker position" + core.getBoard((int)temp.tempPos.X, (int)temp.tempPos.Y));
             }
             if (tmp == 1 && SingleCaptorPossible(temp) && !temps) {
                 Game1.debugger.Add("KING => Line 55 \n");
@@ -112,13 +112,13 @@ namespace Schack
                 for (int j = 0; j < 8 * 8; j++) {
                     if (Game1.activePiece[i].isWhite != a.isWhite && !(Game1.activePiece[i] is King) && Game1.SimulatedMove(Game1.activePiece[i], a, j)) {
                         temporary++;
-                        Game1.debugger.Add(Game1.activePiece[i].toString() + " Pos: " + Game1.getPos(Game1.activePiece[i]));
+                        Game1.debugger.Add(Game1.activePiece[i].toString() + " Pos: " + core.getPos(Game1.activePiece[i]));
                         break;
                     }
                 }
                 if (Game1.activePiece[i].isWhite != a.isWhite) {
-                    Game1.activePiece[i].ActualChecker(Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y), false);
-                    if (Game1.activePiece[i].am[Game1.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] == true) {
+                    Game1.activePiece[i].ActualChecker(core.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y), false);
+                    if (Game1.activePiece[i].am[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] == true) {
                         Game1.debugger.Add("KING => Line 65 \n");
                         Game1.debugger.Add(Game1.activePiece[i].toString());
                         Game1.checkPieces.Add(Game1.activePiece[i]);
@@ -293,8 +293,8 @@ namespace Schack
                 if (Game1.activePiece[i].isWhite != isWhite && !(Game1.activePiece[i] is King) && !Game1.activePiece[i].isDead)
                 {
                     Game1.activePiece[i].am = new bool[64];
-                    Game1.activePiece[i].ActualChecker(Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y), true);
-                    int apPos = Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y);
+                    Game1.activePiece[i].ActualChecker(core.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y), true);
+                    int apPos = core.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y);
                     for (int j = 0; j < 8 * 8; j++)
                     {
                         if (Game1.activePiece[i] is Pawn)
@@ -352,7 +352,7 @@ namespace Schack
             return false;
         }
         private bool KingMoveOpposite(int pos, int i) {
-            int OppositePos = Game1.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y);
+            int OppositePos = core.getBoard((int)Game1.activePiece[i].tempPos.X, (int)Game1.activePiece[i].tempPos.Y);
             if (OppositePos - 9 >= 0 && (OppositePos) % 8 != 0) {
                 if (Game1.isTaken[OppositePos - 9]) {
                     if (Game1.isWho[OppositePos - 9] != null) {

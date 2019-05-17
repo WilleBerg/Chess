@@ -22,6 +22,7 @@ namespace Schack
         public bool[] am;
         public int checkCounter;
         public bool[] checkArray;
+        public Core core = new Core();
         public Piece(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray)
         {
             texture = newTexture;
@@ -58,7 +59,7 @@ namespace Schack
         public void SchackChecker(bool[] arr) {
             Queue<int> q = new Queue<int>();
             for (int i = 0; i < arr.Length; i++) {
-                if (arr[i] || i == Game1.getBoard((int)tempPos.X, (int)tempPos.Y)) {
+                if (arr[i] || i == core.getBoard((int)tempPos.X, (int)tempPos.Y)) {
                     q.Enqueue(i);
                 }
             }

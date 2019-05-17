@@ -8,6 +8,8 @@ TODO:
 - SchackPos Bug
 - Fix pawn bug - FIXED
 
+v1.6.2 - Added core
+
 v1.6.1 - Fixed pawn bug
 
 v1.6 - Fixed checkmate somewhat
