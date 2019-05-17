@@ -68,6 +68,7 @@ namespace Schack {
 
         SoundEffect placingPiece;
 
+        UI ui = new UI();
 
         public static List<Rectangle> boardList = new List<Rectangle>();
         public static List<Piece> activePiece = new List<Piece>();
@@ -75,13 +76,13 @@ namespace Schack {
         public static Dictionary<int, bool> isTaken = new Dictionary<int, bool>();
         public static Piece[] isWho = new Piece[64];
         List<string> isTakenString = new List<string>();
-
+        public static bool exitGame = false;
         public static int runda = 0;
 
         public static bool[] shackArray = new bool[64];
 
-        MouseState mus = Mouse.GetState();
-        MouseState gammalMus = Mouse.GetState();
+        public static MouseState mus = Mouse.GetState();
+        public static MouseState gammalMus = Mouse.GetState();
         KeyboardState tangentBord = Keyboard.GetState(); //för highscores senare
 
         Texture2D bakgrundsbild, wb, wH, wkImg, wpImg, wr, bkImg, red, menyBak, playKnapp, settings, debug, back, exit, disableDebug, whitewins, blackwins, newGame, chessGray;
@@ -89,15 +90,17 @@ namespace Schack {
 
 
         //Meny Hitboxes --------------------------------------------------------
-        Rectangle playButton = new Rectangle(500, 87 * 2, 255, 66);
-        Rectangle settingRec = new Rectangle(500, 87 * 3, 255, 66);
-        Rectangle debugRec = new Rectangle(500, 87 * 2, 255, 66);
-        Rectangle backRec = new Rectangle(500, 87 * 3, 255, 66);
-        Rectangle exitRec = new Rectangle(500, 87 * 4, 255, 66);
-        Rectangle exitRec2 = new Rectangle(560 - 42, 440 - 39, 250, 61);
-        Rectangle backRec2 = new Rectangle(913, 87 * 7 + 50, (int)255 / 2, (int)66 / 2);
-        Rectangle disableRec = new Rectangle(500, 87 * 2, 255, 66);
-        Rectangle newGameRec = new Rectangle(258, 440 - 39, 250, 61);
+        /*
+        public static Rectangle playButton = new Rectangle(500, 87 * 2, 255, 66);
+        public static Rectangle settingRec = new Rectangle(500, 87 * 3, 255, 66);
+        public static Rectangle debugRec = new Rectangle(500, 87 * 2, 255, 66);
+        public static Rectangle backRec = new Rectangle(500, 87 * 3, 255, 66);
+        public static Rectangle exitRec = new Rectangle(500, 87 * 4, 255, 66);
+        public static Rectangle exitRec2 = new Rectangle(560 - 42, 440 - 39, 250, 61);
+        public static Rectangle backRec2 = new Rectangle(913, 87 * 7 + 50, (int)255 / 2, (int)66 / 2);
+        public static Rectangle disableRec = new Rectangle(500, 87 * 2, 255, 66);
+        public static Rectangle newGameRec = new Rectangle(258, 440 - 39, 250, 61);
+        */
         //
 
         // Rectangle wqHitbox = new Rectangle(87, 87, 87, 87);
@@ -160,15 +163,15 @@ namespace Schack {
         public static Vector2 tempPos;
 
 
-        int scen = 1;
-        int menuScene = 0;
+        public static int scen = 1;
+        public static int menuScene = 0;
         int t = 0;
 
         string text = "";
         public static List<string> debugger = new List<string>();
         public static string text2 = "";
 
-        bool debuggingMode = false;
+        public static bool debuggingMode = false;
         bool mouseIsHolding = false;
         public static bool shackMatt = false;
         public static bool vitVinst = false;
@@ -183,14 +186,13 @@ namespace Schack {
             Content.RootDirectory = "Content";
         }
 
-
         protected override void Initialize() {
             graphics.IsFullScreen = false;
             graphics.PreferredBackBufferWidth = 696 + 87 * 4;
             graphics.PreferredBackBufferHeight = 696;
             graphics.ApplyChanges();
             IsMouseVisible = true;
-            AddBoard(boardList);
+            ui.AddBoard(boardList);
 
 
             base.Initialize();
@@ -221,11 +223,13 @@ namespace Schack {
                 Exit();
 
             MouseUpdate();
-
-            for (int i = 0; i < activePiece.Count; i++) {
-                activePiece[i].am = new bool[64];
-                activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+            if (exitGame) {
+                Exit();
             }
+            //for (int i = 0; i < activePiece.Count; i++) {
+            //    activePiece[i].am = new bool[64];
+            //    activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+            //}
             if (runda % 2 != 0) {
                 bk.SchackMatt();
             } else if (runda % 2 == 0) {
@@ -414,23 +418,23 @@ namespace Schack {
             switch (menuScene) {
                 //Standard menu
                 case 0:
-                    spriteBatch.Draw(playKnapp, playButton, Color.White);
-                    spriteBatch.Draw(settings, settingRec, Color.White);
-                    spriteBatch.Draw(exit, exitRec, Color.White);
-                    MenuButtons();
+                    spriteBatch.Draw(playKnapp, ui.graph.playButton, Color.White);
+                    spriteBatch.Draw(settings, ui.graph.settingRec, Color.White);
+                    spriteBatch.Draw(exit, ui.graph.exitRec, Color.White);
+                    ui.MenuButtons();
                     break;
                 //Settings menu
                 case 1:
                     if (debuggingMode == true) {
-                        spriteBatch.Draw(disableDebug, disableRec, Color.White);
+                        spriteBatch.Draw(disableDebug, ui.graph.disableRec, Color.White);
                     } else {
-                        spriteBatch.Draw(debug, debugRec, Color.White);
+                        spriteBatch.Draw(debug, ui.graph.debugRec, Color.White);
                     }
-                    spriteBatch.Draw(back, backRec, Color.White);
+                    spriteBatch.Draw(back, ui.graph.backRec, Color.White);
                     if (debuggingMode == true && menuScene == 1) {
-                        DisableButton();
+                        ui.DisableButton();
                     } else {
-                        SettingsButtons();
+                        ui.SettingsButtons();
                     }
                     break;
             }
@@ -438,7 +442,7 @@ namespace Schack {
         }
         void DrawGame() {
             GraphicsDevice.Clear(Color.DarkGray);
-
+            
             spriteBatch.Begin();
             spriteBatch.Draw(bakgrundsbild, new Rectangle(0, 0, 696, 696), Color.White);
             for (int i = 0; i < activePiece.Count; i++) {
@@ -508,18 +512,18 @@ namespace Schack {
                     spriteBatch.DrawString(arial, debugger[i], new Vector2(750, 200 + i * 15), Color.Black);
                 }
             }
-            spriteBatch.Draw(back, backRec2, Color.White);
+            spriteBatch.Draw(back, ui.graph.backRec2, Color.White);
             if (shackMatt && vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(whitewins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(newGame, newGameRec, Color.White);
-                spriteBatch.Draw(exit, exitRec2, Color.White);
+                spriteBatch.Draw(newGame, ui.graph.newGameRec, Color.White);
+                spriteBatch.Draw(exit, ui.graph.exitRec2, Color.White);
                 debugger.Add("Game1 => Line 455 \n");
             } else if (shackMatt && !vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(blackwins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(exit, exitRec2, Color.White);
-                spriteBatch.Draw(newGame, newGameRec, Color.White);
+                spriteBatch.Draw(exit, ui.graph.exitRec2, Color.White);
+                spriteBatch.Draw(newGame, ui.graph.newGameRec, Color.White);
                 debugger.Add("Game1 => Line 457 \n");
             }
             spriteBatch.End();
@@ -534,75 +538,10 @@ namespace Schack {
                         isTakenString[j] = isHolding.am[j].ToString();
                     }
                     text2 = getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y).ToString();
-                    pieceUpdate(activePiece[i], getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y));
+                    PieceUpdate(activePiece[i], getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y));
                 }
             }
-            if (Musknappar() && RecChecker(backRec2)) {
-                scen = 1;
-            }
-            if (Musknappar() && RecChecker(exitRec2) && shackMatt) {
-                Exit();
-            }
-            if (Musknappar() && RecChecker(newGameRec) && shackMatt) {
-                Exit();
-            }
-        }
-        void MenuButtons() {
-            if (Musknappar() && RecChecker(playButton)) {
-                scen = 0;
-            }
-            if (Musknappar() && RecChecker(settingRec)) {
-                menuScene = 1;
-            }
-            if (Musknappar() && RecChecker(exitRec)) {
-                Exit();
-            }
-        }
-        void DisableButton() {
-            if (Musknappar() && RecChecker(disableRec)) {
-                debuggingMode = false;
-            }
-            if (Musknappar() && RecChecker(backRec)) {
-                menuScene = 0;
-            }
-        }
-        void SettingsButtons() {
-            if (Musknappar() && RecChecker(debugRec)) {
-                debuggingMode = true;
-            }
-            if (Musknappar() && RecChecker(backRec)) {
-                menuScene = 0;
-            }
-
-        }
-        bool Musknappar() {
-            if (mus.LeftButton == ButtonState.Pressed && gammalMus.LeftButton == ButtonState.Released) {
-                return true;
-            } else {
-                return false;
-            }
-
-        }
-        bool RecChecker(Rectangle a) {
-            if (a.Contains(mus.Position)) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        bool LeftMousePressed() {
-            if (mus.LeftButton == ButtonState.Pressed) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        public void AddBoard(List<Rectangle> boardList) {
-            for (int j = 0; j < 8; j++) {
-                for (int i = 0; i < 8; i++) {
-                    boardList.Add(new Rectangle(87 * i, 87 * j, 87, 87));
-                }
-            }
+            ui.ForMouseUpdate();
         }
         void Seize(Piece ap) {
             ap.isDead = true;
@@ -625,9 +564,9 @@ namespace Schack {
                 ap.rectangle.Y = (int)ap.vector.Y;
             }
         }
-        void pieceUpdate(Piece ap, int oNmr) {  // Activepiece originalNumber
+        void PieceUpdate(Piece ap, int oNmr) {  // Activepiece originalNumber
 
-            if (ap.rectangle.Contains(mus.Position) && LeftMousePressed()) {
+            if (ap.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                 ap.rectangle.X = mus.X - ap.rectangle.Width / 2;
                 ap.rectangle.Y = mus.Y - ap.rectangle.Height / 2;
                 mouseIsHolding = true;
@@ -761,7 +700,7 @@ namespace Schack {
                 }
                 a.ActualChecker(getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                         if (a.Checker(boardList[i]) && !aa) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
@@ -776,7 +715,7 @@ namespace Schack {
                 }
             } else if (runda % 2 == 0 && a.isWhite == true && whiteCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                         if (SimulatedMove(a, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;
@@ -808,7 +747,7 @@ namespace Schack {
                 }
                 a.ActualChecker(getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                         if (a.Checker(boardList[i]) && !aa) {
                             a.allowedMoves[i] = true;
                             if (isWho[i] != null && isWho[i].isWhite != a.isWhite) {
@@ -827,7 +766,7 @@ namespace Schack {
                 }
             } else if (runda % 2 != 0 && a.isWhite == false && blackCheck) {
                 for (int i = 0; i < 8 * 8; i++) {
-                    if (a.rectangle.Contains(mus.Position) && LeftMousePressed()) {
+                    if (a.rectangle.Contains(mus.Position) && ui.LeftMousePressed()) {
                         if (SimulatedMove(a, i) || a is King) {
                             if (a.Checker(boardList[i])) {
                                 a.allowedMoves[i] = true;

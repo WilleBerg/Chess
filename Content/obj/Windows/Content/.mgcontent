@@ -4,34 +4,34 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/486d28e7b63c28625ea4fa5d3e0951f2.jpg</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/Arial.spritefont</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/back.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/bb.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/bh.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/bk.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/blackwins.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/bp.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/bq.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/br.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/chessgray.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/chessmove.wav</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/debugging.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/disableDebugging.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/exit.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/menyBak.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/microsoft-xp-desktop-0.jpg</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/newgame.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/Play.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/portablejim_2D_Chess_set_-_Chessboard_1.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/red.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/settings.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wb.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wh.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/whitewins.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wk.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wp.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wq.png</File>
-    <File>C:/Users/willi/Desktop/Schack (1)/Content/wr.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/486d28e7b63c28625ea4fa5d3e0951f2.jpg</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/Arial.spritefont</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/back.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/bb.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/bh.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/bk.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/blackwins.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/bp.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/bq.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/br.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/chessgray.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/chessmove.wav</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/debugging.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/disableDebugging.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/exit.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/menyBak.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/microsoft-xp-desktop-0.jpg</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/newgame.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/Play.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/portablejim_2D_Chess_set_-_Chessboard_1.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/red.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/settings.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wb.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wh.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/whitewins.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wk.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wp.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wq.png</File>
+    <File>C:/Users/willi/Desktop/Schack v1.4/Content/wr.png</File>
   </SourceFiles>
 </SourceFileCollection>

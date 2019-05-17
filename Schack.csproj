@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Bishop.cs" />
     <Compile Include="BlackPawn.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="King.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Knight.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Queen.cs" />
     <Compile Include="Pawn.cs" />
     <Compile Include="Rook.cs" />
+    <Compile Include="UI.cs" />
     <Compile Include="WhitePawn.cs" />
   </ItemGroup>
   <ItemGroup>

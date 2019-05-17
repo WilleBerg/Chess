@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/willi/Desktop/Schack (1)/Content/settings.png</SourceFile>
+  <SourceFile>C:/Users/willi/Desktop/Schack v1.4/Content/settings.png</SourceFile>
   <SourceTime>2019-04-26T23:37:22.1028057+02:00</SourceTime>
-  <DestFile>C:/Users/willi/Desktop/Schack (1)/Content/bin/Windows/Content/settings.xnb</DestFile>
-  <DestTime>2019-04-26T23:41:58.8607009+02:00</DestTime>
+  <DestFile>C:/Users/willi/Desktop/Schack v1.4/Content/bin/Windows/Content/settings.xnb</DestFile>
+  <DestTime>2019-05-17T19:42:48.8623225+02:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-11-24T22:30:50+01:00</ImporterTime>
   <Processor>TextureProcessor</Processor>
