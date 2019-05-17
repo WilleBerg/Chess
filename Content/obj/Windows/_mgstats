@@ -1,0 +1,6 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"C:/Users/carlk/source/repos/Schack/Schack/Content/486d28e7b63c28625ea4fa5d3e0951f2.jpg","C:/Users/carlk/source/repos/Schack/Schack/Content/bin/Windows/486d28e7b63c28625ea4fa5d3e0951f2.xnb","TextureProcessor","Texture2DContent",14494,291685,0,2024598
+"C:/Users/carlk/source/repos/Schack/Schack/Content/Arial.spritefont","C:/Users/carlk/source/repos/Schack/Schack/Content/bin/Windows/arial.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0,3184024
+"C:/Users/carlk/source/repos/Schack/Schack/Content/Chessboard-template-used-to-generate-chessboard-fusion-with-two-images.png","C:/Users/carlk/source/repos/Schack/Schack/Content/bin/Windows/Chessboard-template-used-to-generate-chessboard-fusion-with-two-images.xnb","TextureProcessor","Texture2DContent",6864,2178661,0,1616923
+"C:/Users/carlk/source/repos/Schack/Schack/Content/File.spritefont","C:/Users/carlk/source/repos/Schack/Schack/Content/bin/Windows/File.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0,0887841
+"C:/Users/carlk/source/repos/Schack/Schack/Content/microsoft-xp-desktop-0.jpg","C:/Users/carlk/source/repos/Schack/Schack/Content/bin/Windows/microsoft-xp-desktop-0.xnb","TextureProcessor","Texture2DContent",65754,2497525,0,1279677

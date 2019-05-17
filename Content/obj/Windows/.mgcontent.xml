@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/Carl/source/repos/Schack/Content/486d28e7b63c28625ea4fa5d3e0951f2.jpg</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/microsoft-xp-desktop-0.jpg</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wb.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wh.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wk.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wp.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wq.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/wr.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/portablejim_2D_Chess_set_-_Chessboard_1.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/Arial.spritefont</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/red.png</File>
+    <File>C:/Users/Carl/source/repos/Schack/Content/bk.png</File>
+  </SourceFiles>
+</SourceFileCollection>

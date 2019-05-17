@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/willi/Desktop/Schack (1)/Content/chessmove.wav</SourceFile>
+  <SourceTime>2019-05-14T14:47:46.7861734+02:00</SourceTime>
+  <DestFile>C:/Users/willi/Desktop/Schack (1)/Content/bin/Windows/chessmove.xnb</DestFile>
+  <DestTime>2019-05-14T14:48:47.8895864+02:00</DestTime>
+  <Importer>WavImporter</Importer>
+  <ImporterTime>2017-11-24T22:30:50+01:00</ImporterTime>
+  <Processor>SoundEffectProcessor</Processor>
+  <ProcessorTime>2017-11-24T22:30:50+01:00</ProcessorTime>
+  <Parameters>
+    <Key>Quality</Key>
+    <Value>Best</Value>
+  </Parameters>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput />
+</PipelineBuildEvent>

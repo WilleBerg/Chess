@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SourceFileCollection xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <Profile>Reach</Profile>
+  <Platform>Windows</Platform>
+  <Config />
+  <SourceFiles>
+    <File>C:/Users/carlk/source/repos/Schack/Schack/Content/486d28e7b63c28625ea4fa5d3e0951f2.jpg</File>
+    <File>C:/Users/carlk/source/repos/Schack/Schack/Content/Arial.spritefont</File>
+    <File>C:/Users/carlk/source/repos/Schack/Schack/Content/Chessboard-template-used-to-generate-chessboard-fusion-with-two-images.png</File>
+    <File>C:/Users/carlk/source/repos/Schack/Schack/Content/File.spritefont</File>
+    <File>C:/Users/carlk/source/repos/Schack/Schack/Content/microsoft-xp-desktop-0.jpg</File>
+  </SourceFiles>
+  <DestFiles>
+    <File xsi:nil="true" />
+    <File>arial.spritefont</File>
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+    <File xsi:nil="true" />
+  </DestFiles>
+</SourceFileCollection>
