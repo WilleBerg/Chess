@@ -1,1 +1,2 @@
-# ChessTest
+# Chess
+# Carl & William
