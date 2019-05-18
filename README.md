@@ -1,12 +1,6 @@
 # Chess
 
-
-TODO:
-- Make simulatedMove?
-- Discover check bug
-- New game/ Reset game
-- SchackPos Bug
-- Fix pawn bug - FIXED
+v1.6.21 - Moved TODO to issues
 
 v1.6.2 - Added core
 
