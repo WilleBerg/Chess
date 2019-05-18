@@ -422,19 +422,19 @@ namespace Schack {
             switch (menuScene) {
                 //Standard menu
                 case 0:
-                    spriteBatch.Draw(playKnapp, core.ui.graph.playButton, Color.White);
-                    spriteBatch.Draw(settings, core.ui.graph.settingRec, Color.White);
-                    spriteBatch.Draw(exit, core.ui.graph.exitRec, Color.White);
+                    spriteBatch.Draw(playKnapp, core.ui.graphics.playButton, Color.White);
+                    spriteBatch.Draw(settings, core.ui.graphics.settingRec, Color.White);
+                    spriteBatch.Draw(exit, core.ui.graphics.exitRec, Color.White);
                     core.ui.MenuButtons();
                     break;
                 //Settings menu
                 case 1:
                     if (debuggingMode == true) {
-                        spriteBatch.Draw(disableDebug, core.ui.graph.disableRec, Color.White);
+                        spriteBatch.Draw(disableDebug, core.ui.graphics.disableRec, Color.White);
                     } else {
-                        spriteBatch.Draw(debug, core.ui.graph.debugRec, Color.White);
+                        spriteBatch.Draw(debug, core.ui.graphics.debugRec, Color.White);
                     }
-                    spriteBatch.Draw(back, core.ui.graph.backRec, Color.White);
+                    spriteBatch.Draw(back, core.ui.graphics.backRec, Color.White);
                     if (debuggingMode == true && menuScene == 1) {
                         core.ui.DisableButton();
                     } else {
@@ -492,18 +492,18 @@ namespace Schack {
                     spriteBatch.DrawString(arial, debugger[i], new Vector2(750, 200 + i * 15), Color.Black);
                 }
             }
-            spriteBatch.Draw(back, core.ui.graph.backRec2, Color.White);
+            spriteBatch.Draw(back, core.ui.graphics.backRec2, Color.White);
             if (shackMatt && vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(whitewins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(newGame, core.ui.graph.newGameRec, Color.White);
-                spriteBatch.Draw(exit, core.ui.graph.exitRec2, Color.White);
+                spriteBatch.Draw(newGame, core.ui.graphics.newGameRec, Color.White);
+                spriteBatch.Draw(exit, core.ui.graphics.exitRec2, Color.White);
                 debugger.Add("Game1 => Line 455 \n");
             } else if (shackMatt && !vitVinst) {
                 spriteBatch.Draw(chessGray, new Vector2(0, 0), Color.White);
                 spriteBatch.Draw(blackwins, new Vector2(516 / 2, 348 - 348 / 4), Color.White);
-                spriteBatch.Draw(exit, core.ui.graph.exitRec2, Color.White);
-                spriteBatch.Draw(newGame, core.ui.graph.newGameRec, Color.White);
+                spriteBatch.Draw(exit, core.ui.graphics.exitRec2, Color.White);
+                spriteBatch.Draw(newGame, core.ui.graphics.newGameRec, Color.White);
                 debugger.Add("Game1 => Line 457 \n");
             }
             spriteBatch.End();

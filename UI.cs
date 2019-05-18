@@ -9,36 +9,36 @@ using Microsoft.Xna.Framework.Input;
 namespace Schack {
     public class UI {
         
-        public Graph graph = new Graph();
+        public Graph graphics = new Graph();
 
         public UI() {
-            graph = new Graph();
+            graphics = new Graph();
         }
 
         public void MenuButtons() {
-            if (Musknappar() && RecChecker(graph.playButton)) {
+            if (Musknappar() && RecChecker(graphics.playButton)) {
                 Game1.scen = 0;
             }
-            if (Musknappar() && RecChecker(graph.settingRec)) {
+            if (Musknappar() && RecChecker(graphics.settingRec)) {
                 Game1.menuScene = 1;
             }
-            if (Musknappar() && RecChecker(graph.exitRec)) {
+            if (Musknappar() && RecChecker(graphics.exitRec)) {
                 Game1.exitGame = true;
             }
         }
         public void DisableButton() {
-            if (Musknappar() && RecChecker(graph.disableRec)) {
+            if (Musknappar() && RecChecker(graphics.disableRec)) {
                 Game1.debuggingMode = false;
             }
-            if (Musknappar() && RecChecker(graph.backRec)) {
+            if (Musknappar() && RecChecker(graphics.backRec)) {
                 Game1.menuScene = 0;
             }
         }
         public void SettingsButtons() {
-            if (Musknappar() && RecChecker(graph.debugRec)) {
+            if (Musknappar() && RecChecker(graphics.debugRec)) {
                 Game1.debuggingMode = true;
             }
-            if (Musknappar() && RecChecker(graph.backRec)) {
+            if (Musknappar() && RecChecker(graphics.backRec)) {
                 Game1.menuScene = 0;
             }
 
@@ -73,13 +73,13 @@ namespace Schack {
             }
         }
         public void ForMouseUpdate() {
-            if (Musknappar() && RecChecker(graph.backRec2)) {
+            if (Musknappar() && RecChecker(graphics.backRec2)) {
                 Game1.scen = 1;
             }
-            if (Musknappar() && RecChecker(graph.exitRec2) && Game1.shackMatt) {
+            if (Musknappar() && RecChecker(graphics.exitRec2) && Game1.shackMatt) {
                 Game1.exitGame = true;
 }
-            if (Musknappar() && RecChecker(graph.newGameRec) && Game1.shackMatt) {
+            if (Musknappar() && RecChecker(graphics.newGameRec) && Game1.shackMatt) {
                 Game1.exitGame = true;
             }
         }
