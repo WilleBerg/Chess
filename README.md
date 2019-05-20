@@ -1,5 +1,11 @@
 # Chess
 
+
+# Allowedmoves e helt buggad nu så discovercheck fungerar inte alls.
+# Behöver antingen fixa det eller så behöver vi simulated move, vilket vi ändå
+# faktiskt behöver. Nog ingen idé att gö nått annat än simulated move
+
+
 v1.6.21 - Moved TODO to issues
 
 v1.6.2 - Added core

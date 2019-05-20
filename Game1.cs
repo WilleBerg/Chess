@@ -554,16 +554,16 @@ namespace Schack {
                 Piece curr = null;
                 for (int i = 0; i < activePiece.Count; i++) {
                     if (!activePiece[i].isWhite && !activePiece[i].isDead) {
-                        //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+                        activePiece[i].ActualChecker(core.getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
                         if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } else if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && core.cantSeize(a, activePiece[i])) {
-                            aa = true;
-                            seizeAble = true;
-                            curr = activePiece[i];
-                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        }
+                        } //else if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && core.cantSeize(a, activePiece[i])) {
+                        //    aa = true;
+                        //    seizeAble = true;
+                        //    curr = activePiece[i];
+                        //    debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
+                        //}
                     }
                 }
                 a.ActualChecker(core.getPos(a), false);
@@ -572,10 +572,10 @@ namespace Schack {
                         if (a.Checker(boardList[i]) && !aa) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        } else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
-                            a.allowedMoves[i] = true;
-                            spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        }
+                        } //else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
+                        //    a.allowedMoves[i] = true;
+                        //    spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
+                        //}
                         if (a.schack[i] == true && debuggingMode) {
                             spriteBatch.Draw(red, boardList[i], Color.Yellow);
                         }
@@ -600,19 +600,19 @@ namespace Schack {
                 a.am = new bool[64];
                 bool aa = false;
                 bool seizeAble = false;
-                Piece curr = null;
+                //Piece curr = null;
                 for (int i = 0; i < activePiece.Count; i++) {
                     if (activePiece[i].isWhite && !activePiece[i].isDead) {
-                        //activePiece[i].ActualChecker(getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
+                        activePiece[i].ActualChecker(core.getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
                         if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
                             aa = true;
                             debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } else if (activePiece[i].schack[core.getPos(a)] && core.cantSeize(a, activePiece[i])) {
-                            aa = true;
-                            seizeAble = true;
-                            curr = activePiece[i];
-                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        }
+                        } //else if (activePiece[i].schack[core.getPos(a)] && core.cantSeize(a, activePiece[i])) {
+                        //    aa = true;
+                        //    seizeAble = true;
+                        //    curr = activePiece[i];
+                        //    debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
+                        //}
                     }
                 }
                 a.ActualChecker(core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
@@ -625,10 +625,10 @@ namespace Schack {
                             } else if (isWho[i] == null) {
                                 spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                             }
-                        } else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
-                            a.allowedMoves[i] = true;
-                            spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        }
+                        } //else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
+                            //a.allowedMoves[i] = true;
+                            //spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
+                        //}
                         if (a.schack[i] == true && debuggingMode) {
                             spriteBatch.Draw(red, boardList[i], Color.Yellow);
                         }
