@@ -7,14 +7,6 @@ using System;
 using System.Collections.Generic;
 
 namespace Schack {
-    /*
-    TODO:
-    Make simulatedMove?
-    Discover check bug
-    New game/ Reset game
-    SchackPos Bug
-    Fix git and github
-     */
 
     public class Game1 : Game {
         GraphicsDeviceManager graphics;

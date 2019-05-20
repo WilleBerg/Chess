@@ -68,9 +68,6 @@ namespace Schack {
                     q.Enqueue(i);
                 }
             }
-            for (int i = 0; i < tmpList.Count; i++) {
-                tmpList[i].ActualChecker(getPos(tmpList[i]), false);
-            }
             Game1.debugger.Add(q.Count.ToString());
             while (q.Count > 0) {
                 int i = q.Dequeue();
@@ -194,6 +191,13 @@ namespace Schack {
                     isWhoTemp[currPos] = null;
                 } else if (isTakenTemp[i] && isWhoTemp[i].isWhite != apCopy.isWhite) {
                     Seize(isWhoTemp[i]);
+                    isWhoTemp[i].isDead = true;
+                    for (int j = 0; j < tmpList.Count; j++) {
+                        if (getPos(tmpList[j]) == i) {
+                            Seize(tmpList[j]);
+                        }
+                    }
+                    Game1.debugger.Add("Seizing " + isWhoTemp[i].toString());
                     isTakenTemp[i] = true;
                     isTakenTemp[currPos] = false;
                     apCopy.rectangle.X = Game1.boardList[i].X;
@@ -221,12 +225,13 @@ namespace Schack {
                         for (int k = 0; k < tmpList[j].am.Length; k++) {
                             if (tmpList[j].am[k] && k == getPos(king)) {
                                 tmp++;
+                                Game1.debugger.Add(tmpList[j].toString());
                                 break;  
                             }
                         }
                     }
                 }
-                Game1.debugger.Add(tmp.ToString());
+                Game1.debugger.Add("Tmp " + tmp.ToString());
                 if (tmp == 0) {
                     returnMoves.Add(i);
                 }
