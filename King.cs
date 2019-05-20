@@ -26,6 +26,9 @@ namespace Schack
             schack = new bool[64];
         }
 
+        public King(Piece a) : base(a) {
+        }
+
         override
         public bool Checker(Rectangle a)
         {
@@ -482,6 +485,10 @@ namespace Schack
 
         public override string toString() {
             return "King";
+        }
+
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            
         }
     }
 }

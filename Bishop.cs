@@ -7,8 +7,11 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Schack {
-    class Bishop : Piece {
+    public class Bishop : Piece {
         public Bishop(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray) {
+        }
+
+        public Bishop(Piece a) : base(a) {
         }
 
         public override void ActualChecker(int pos, bool lfs) {
@@ -239,6 +242,133 @@ namespace Schack {
                     }
                 }
             }
+        }
+
+
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            am = new bool[64];
+            for (int i = 1; i < SimdiagUpRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 7 * i] = true;
+            }
+            for (int i = 1; i < SimdiagDownLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 7 * i] = true;
+            }
+            for (int i = 1; i < SimdiagUpLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 9 * i] = true;
+            }
+            for (int i = 1; i < SimdiagDownRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + i * 9] = true;
+            }
+        }
+        private int SimdiagUpRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+
+            for (int i = 1; i < 8; i++) {
+                if (pos - 7 * i > 0 && (pos - 7 * i) % 8 != 0 && Game1.isTaken[pos - 7 * i] == false) {
+                    tmp++;
+                } else if (pos - 7 * i > 0 && (pos - 7 * i) % 8 != 0 && Game1.isTaken[pos - 7 * i] == true) {
+                    if (Game1.isWho[pos - 7 * i] != null) {
+                        if (Game1.isWho[pos - 7 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+            return tmp;
+        }
+        private int SimdiagUpLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            if (pos % 8 != 0) {
+                for (int i = 1; i < 8; i++) {
+                    if (pos - 9 * i >= 0 && (pos - 9 * i) % 8 != 0 && isTaken[pos - 9 * i] == false) {
+                        tmp++;
+                    } else if (pos - 9 * i >= 0 && (pos - 9 * i) % 8 == 0 && isTaken[pos - 9 * i] == false) {
+                        tmp++;
+                        break;
+                    } else if (pos - 9 * i > 0 && (pos - 9 * i) % 8 != 0 && isTaken[pos - 9 * i] == true) {
+                        if (isWho[pos - 9 * i] != null) {
+                            if (isWho[pos - 9 * i].isWhite == isWhite) {
+                                break;
+                            } else {
+                                tmp++;
+                                break;
+                            }
+                        }
+                    } else if (pos - 9 * i > 0 && (pos - 9 * i) % 8 == 0 && isTaken[pos - 9 * i] == true) {
+                        if (isWho[pos - 9 * i] != null) {
+                            if (isWho[pos - 9 * i].isWhite == isWhite) {
+                                break;
+                            } else {
+                                tmp++;
+                                break;
+                            }
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                return 0;
+            }
+            return tmp;
+        }
+        private int SimdiagDownRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            for (int i = 1; i < 8; i++) {
+                if (pos + 9 * i <= 63 && (pos + 9 * i) % 8 != 0 && isTaken[pos + 9 * i] == false) {
+                    tmp++;
+                } else if (pos + 9 * i <= 63 && (pos + 9 * i) % 8 != 0 && isTaken[pos + 9 * i] == true) {
+                    if (isWho[pos + 9 * i] != null) {
+                        if (isWho[pos + 9 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+            return tmp;
+        }
+        private int SimdiagDownLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            if (pos % 8 == 0) {
+                return 0;
+            }
+            for (int i = 1; i < 8; i++) {
+                if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 != 0 && isTaken[pos + 7 * i] == false) {
+                    tmp++;
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 == 0 && isTaken[pos + 7 * i] == false) {
+                    tmp++;
+                    break;
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 == 0 && isTaken[pos + 7 * i] == true) {
+                    if (isWho[pos + 7 * i] != null) {
+                        if (isWho[pos + 7 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 != 0 && isTaken[pos + 7 * i] == true) {
+                    if (isWho[pos + 7 * i] != null) {
+                        if (isWho[pos + 7 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                }
+            }
+            return tmp;
         }
     }
 }

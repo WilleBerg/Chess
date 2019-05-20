@@ -23,6 +23,21 @@ namespace Schack
         public int checkCounter;
         public bool[] checkArray;
         public Core core = new Core();
+        public Piece(Piece a) {
+            this.texture = a.texture;
+            this.rectangle = a.rectangle;
+            this.vector = a.vector;
+            this.tempPos = a.tempPos;
+            this.isWhite = a.isWhite;
+            this.isDead = a.isDead;
+            this.schack = a.schack;
+            this.allowedMoves = a.allowedMoves;
+            this.am = a.am;
+            this.checkCounter = a.checkCounter;
+            this.checkArray = a.checkArray;
+            this.core = a.core;
+    }
+
         public Piece(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray)
         {
             texture = newTexture;
@@ -55,6 +70,8 @@ namespace Schack
 
         public abstract bool Checker(Rectangle aa);
         public abstract void ActualChecker(int pos, bool lfs); // lfs = Looking For Schack
+
+        public abstract void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList);
 
         public void SchackChecker(bool[] arr) {
             Queue<int> q = new Queue<int>();

@@ -8,10 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Schack
 {
-    class Rook : Piece
+    public class Rook : Piece
     {
         public Rook(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
+        }
+
+        public Rook(Piece a) : base(a) {
         }
 
         public override void ActualChecker(int pos, bool lfs)
@@ -230,6 +233,90 @@ namespace Schack
                     }
                 }
             }
+        }
+
+
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            am = new bool[64];
+            for (int i = 0; i < SimwidthLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 1 - i] = true;
+            }
+            for (int i = 0; i < SimwidthRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 1 + i] = true;
+            }
+            for (int i = 1; i < SimheightUp(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 8 * i] = true;
+            }
+            for (int i = 1; i < SimheightDown(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 8 * i] = true;
+            }
+        }
+        private int SimheightUp(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 0;
+            for (int i = 1; i < 8; i++) {
+                if (pos - 8 * i >= 0 && isTaken[pos - 8 * i] == false) {
+                    tmp++;
+                } else if (pos - 8 * i >= 0 && isTaken[pos - 8 * i] == true && isWho[pos - 8 * i].isWhite != isWhite) {
+                    tmp++;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            tmp++;
+            return tmp;
+        }
+        private int SimheightDown(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 0;
+            for (int i = 1; i < 8; i++) {
+                if (pos + 8 * i <= 63 && isTaken[pos + 8 * i] == false) {
+                    tmp++;
+                } else if (pos + 8 * i <= 63 && isTaken[pos + 8 * i] == true && isWho[pos + 8 * i].isWhite != isWhite) {
+                    tmp++;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            tmp++;
+            return tmp++;
+        }
+        private int SimwidthLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int rnt = 0;
+            int tmp = pos - 1;
+            if (pos % 8 == 0) {
+
+            } else {
+                while (tmp % 8 != 0) {
+                    if (isTaken[tmp] == false) {
+                        rnt++;
+                        tmp--;
+                    } else if (isTaken[tmp] == true && isWho[tmp].isWhite != isWhite) {
+                        break;
+                    } else {
+                        rnt--;
+                        break;
+                    }
+                }
+                rnt++;
+            }
+            return rnt;
+        }
+        private int SimwidthRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int rnt = 0;
+            int tmp = pos + 1;
+            while (tmp % 8 != 0) {
+                if (isTaken[tmp] == false) {
+                    rnt++;
+                    tmp++;
+                } else if (isTaken[tmp] == true && isWho[tmp].isWhite != isWhite) {
+                    rnt++;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            return rnt;
         }
     }
 }

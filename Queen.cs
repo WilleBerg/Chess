@@ -15,6 +15,9 @@ namespace Schack
 
         }
 
+        public Queen(Piece a) : base(a) {
+        }
+
         override
         public bool Checker(Rectangle a)
         {
@@ -64,6 +67,7 @@ namespace Schack
         }
         private int diagUpRight(int pos, bool lfs) {
             int tmp = 1;
+            
             for (int i = 1; i < 8; i++) {
                 if (pos - 7 * i > 0 && (pos - 7 * i) % 8 != 0 && Game1.isTaken[pos - 7 * i] == false) {
                     tmp++;
@@ -414,6 +418,210 @@ namespace Schack
 
         public override string toString() {
             return "Queen";
+        }
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            am = new bool[64];
+            for (int i = 0; i < SimwidthLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 1 - i] = true;
+            }
+            for (int i = 0; i < SimwidthRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 1 + i] = true;
+            }
+            for (int i = 1; i < SimheightUp(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 8 * i] = true;
+            }
+            for (int i = 1; i < SimheightDown(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 8 * i] = true;
+            }
+            for (int i = 1; i < SimdiagUpRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 7 * i] = true;
+            }
+            for (int i = 1; i < SimdiagDownLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + 7 * i] = true;
+            }
+            for (int i = 1; i < SimdiagUpLeft(pos, isWho, isTaken, tmpList); i++) {
+                am[pos - 9 * i] = true;
+            }
+            for (int i = 1; i < SimdiagDownRight(pos, isWho, isTaken, tmpList); i++) {
+                am[pos + i * 9] = true;
+            }
+        }
+        private int SimdiagUpRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+
+            for (int i = 1; i < 8; i++) {
+                if (pos - 7 * i > 0 && (pos - 7 * i) % 8 != 0 && Game1.isTaken[pos - 7 * i] == false) {
+                    tmp++;
+                } else if (pos - 7 * i > 0 && (pos - 7 * i) % 8 != 0 && Game1.isTaken[pos - 7 * i] == true) {
+                    if (Game1.isWho[pos - 7 * i] != null) {
+                        if (Game1.isWho[pos - 7 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+            return tmp;
+        }
+        private int SimdiagUpLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            if (pos % 8 != 0) {
+                for (int i = 1; i < 8; i++) {
+                    if (pos - 9 * i >= 0 && (pos - 9 * i) % 8 != 0 && isTaken[pos - 9 * i] == false) {
+                        tmp++;
+                    } else if (pos - 9 * i >= 0 && (pos - 9 * i) % 8 == 0 && isTaken[pos - 9 * i] == false) {
+                        tmp++;
+                        break;
+                    } else if (pos - 9 * i > 0 && (pos - 9 * i) % 8 != 0 && isTaken[pos - 9 * i] == true) {
+                        if (isWho[pos - 9 * i] != null) {
+                            if (isWho[pos - 9 * i].isWhite == isWhite) {
+                                break;
+                            } else {
+                                tmp++;
+                                break;
+                            }
+                        }
+                    } else if (pos - 9 * i > 0 && (pos - 9 * i) % 8 == 0 && isTaken[pos - 9 * i] == true) {
+                        if (isWho[pos - 9 * i] != null) {
+                            if (isWho[pos - 9 * i].isWhite == isWhite) {
+                                break;
+                            }  else {
+                                tmp++;
+                                break;
+                            }
+                        }
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                return 0;
+            }
+            return tmp;
+        }
+        private int SimdiagDownRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            for (int i = 1; i < 8; i++) {
+                if (pos + 9 * i <= 63 && (pos + 9 * i) % 8 != 0 && isTaken[pos + 9 * i] == false) {
+                    tmp++;
+                } else if (pos + 9 * i <= 63 && (pos + 9 * i) % 8 != 0 && isTaken[pos + 9 * i] == true) {
+                    if (isWho[pos + 9 * i] != null) {
+                        if (isWho[pos + 9 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+            return tmp;
+        }
+        private int SimdiagDownLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 1;
+            if (pos % 8 == 0) {
+                return 0;
+            }
+            for (int i = 1; i < 8; i++) {
+                if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 != 0 && isTaken[pos + 7 * i] == false) {
+                    tmp++;
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 == 0 && isTaken[pos + 7 * i] == false) {
+                    tmp++;
+                    break;
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 == 0 && isTaken[pos + 7 * i] == true) {
+                    if (isWho[pos + 7 * i] != null) {
+                        if (isWho[pos + 7 * i].isWhite == isWhite) {
+                            break;
+                        } else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                } else if (pos + 7 * i <= 63 && (pos + 7 * i) % 8 != 0 && isTaken[pos + 7 * i] == true) {
+                    if (isWho[pos + 7 * i] != null) {
+                        if (isWho[pos + 7 * i].isWhite == isWhite) {
+                            break;
+                        }  else {
+                            tmp++;
+                            break;
+                        }
+                    }
+                }
+            }
+            return tmp;
+        }
+        private int SimheightUp(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 0;
+            for (int i = 1; i < 8; i++) {
+                if (pos - 8 * i >= 0 && isTaken[pos - 8 * i] == false) {
+                    tmp++;
+                } else if (pos - 8 * i >= 0 && isTaken[pos - 8 * i] == true && isWho[pos - 8 * i].isWhite != isWhite) {
+                    tmp++;
+                    break;
+                }  else {
+                    break;
+                }
+            }
+            tmp++;
+            return tmp;
+        }
+        private int SimheightDown(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int tmp = 0;
+            for (int i = 1; i < 8; i++) {
+                if (pos + 8 * i <= 63 && isTaken[pos + 8 * i] == false) {
+                    tmp++;
+                } else if (pos + 8 * i <= 63 && isTaken[pos + 8 * i] == true && isWho[pos + 8 * i].isWhite != isWhite) {
+                    tmp++;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            tmp++;
+            return tmp++;
+        }
+        private int SimwidthLeft(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int rnt = 0;
+            int tmp = pos - 1;
+            if (pos % 8 == 0) {
+
+            } else {
+                while (tmp % 8 != 0) {
+                    if (isTaken[tmp] == false) {
+                        rnt++;
+                        tmp--;
+                    } else if (isTaken[tmp] == true && isWho[tmp].isWhite != isWhite) {
+                        break;
+                    } else {
+                        rnt--;
+                        break;
+                    }
+                }
+                rnt++;
+            }
+            return rnt;
+        }
+        private int SimwidthRight(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            int rnt = 0;
+            int tmp = pos + 1;
+            while (tmp % 8 != 0) {
+                if (isTaken[tmp] == false) {
+                    rnt++;
+                    tmp++;
+                } else if (isTaken[tmp] == true && isWho[tmp].isWhite != isWhite) {
+                    rnt++;
+                    break;
+                } else {
+                    break;
+                }
+            }
+            return rnt;
         }
     }
 }

@@ -8,12 +8,15 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Schack
 {
-    class WhitePawn : Pawn
+    public class WhitePawn : Pawn
     {
 
         public WhitePawn(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
             isFirstMove = true;
+        }
+
+        public WhitePawn(Piece a) : base(a) {
         }
 
         public override void ActualChecker(int pos, bool lfs)
@@ -100,6 +103,28 @@ namespace Schack
 
         public override string toString() {
             return "White Pawn";
+        }
+
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos >= 48 && pos <= 55) {
+                for (int i = 1; i < 3; i++) {
+                    if (!isTaken[pos - 8 * i]) {
+                        am[pos - i * 8] = true;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if (pos - 8 >= 0 && !isTaken[pos - 8]) {
+                    am[pos - 8] = true;
+                }
+            }
+            if (pos - 7 >= 0 && pos % 8 != 7 && isTaken[pos - 7] == true && isWho[pos - 7].isWhite != isWhite) {
+                am[pos - 7] = true;
+            }
+            if (pos - 9 >= 0 && pos % 8 != 0 && isTaken[pos - 9] == true && isWho[pos - 9].isWhite != isWhite) {
+                am[pos - 9] = true;
+            }
         }
     }
 

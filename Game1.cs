@@ -24,47 +24,47 @@ namespace Schack {
         Random rnd = new Random();
 
 
-        King wk;
-        King bk;
+        public static King wk;
+        public static King bk;
 
-        Queen wQ;
-        Queen bQ;
-        Queen wQ2;
-        Queen bQ2;
+        public static Queen wQ;
+        public static Queen bQ;
+        public static Queen wQ2;
+        public static Queen bQ2;
 
-        Rook wR1;
-        Rook wR2;
-        Rook bR1;
-        Rook bR2;
+        public static Rook wR1;
+        public static Rook wR2;
+        public static Rook bR1;
+        public static Rook bR2;
 
-        Bishop wB;
-        Bishop wB2;
-        Bishop bB;
-        Bishop bB2;
+        public static Bishop wB;
+        public static Bishop wB2;
+        public static Bishop bB;
+        public static Bishop bB2;
 
-        Knight wh;
-        Knight wh2;
-        Knight bh;
-        Knight bh2;
+        public static Knight wh;
+        public static Knight wh2;
+        public static Knight bh;
+        public static Knight bh2;
 
 
-        WhitePawn wp1;
-        WhitePawn wp2;
-        WhitePawn wp3;
-        WhitePawn wp4;
-        WhitePawn wp5;
-        WhitePawn wp6;
-        WhitePawn wp7;
-        WhitePawn wp8;
+        public static WhitePawn wp1;
+        public static WhitePawn wp2;
+        public static WhitePawn wp3;
+        public static WhitePawn wp4;
+        public static WhitePawn wp5;
+        public static WhitePawn wp6;
+        public static WhitePawn wp7;
+        public static WhitePawn wp8;
 
-        BlackPawn bp1;
-        BlackPawn bp2;
-        BlackPawn bp3;
-        BlackPawn bp4;
-        BlackPawn bp5;
-        BlackPawn bp6;
-        BlackPawn bp7;
-        BlackPawn bp8;
+        public static BlackPawn bp1;
+        public static BlackPawn bp2;
+        public static BlackPawn bp3;
+        public static BlackPawn bp4;
+        public static BlackPawn bp5;
+        public static BlackPawn bp6;
+        public static BlackPawn bp7;
+        public static BlackPawn bp8;
 
         public static SoundEffect placingPiece;
 
@@ -259,7 +259,6 @@ namespace Schack {
             //Kings
             wk = new King(Content.Load<Texture2D>("wk"), wkHitbox, new Vector2(87 * 4, 87 * 7), new Vector2(87 * 4, 87 * 7), true, tmp, tmp, false, 0, tmp);
             bk = new King(Content.Load<Texture2D>("bk"), bkHitbox, new Vector2(87 * 4, 0), new Vector2(87 * 4, 0), false, tmp, tmp, false, 0, tmp);
-
 
             //Queens
             wQ = new Queen(Content.Load<Texture2D>("wq"), wQHitbox, new Vector2(87 * 3, 87 * 7), new Vector2(87 * 3, 87 * 7), true, tmp, tmp, false, 0, tmp);
@@ -549,33 +548,14 @@ namespace Schack {
             
             if (runda % 2 == 0 && a.isWhite == true && !whiteCheck) {
                 a.am = new bool[64];
-                bool aa = false;
-                bool seizeAble = false;
-                Piece curr = null;
-                for (int i = 0; i < activePiece.Count; i++) {
-                    if (!activePiece[i].isWhite && !activePiece[i].isDead) {
-                        activePiece[i].ActualChecker(core.getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
-                        if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
-                            aa = true;
-                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } //else if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && core.cantSeize(a, activePiece[i])) {
-                        //    aa = true;
-                        //    seizeAble = true;
-                        //    curr = activePiece[i];
-                        //    debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        //}
-                    }
-                }
                 a.ActualChecker(core.getPos(a), false);
+                List<int> AllMoves = core.SimulateRound(a);
                 for (int i = 0; i < 8 * 8; i++) {
                     if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
-                        if (a.Checker(boardList[i]) && !aa) {
+                        if (a.Checker(boardList[i]) && AllMoves.Contains(i)) {
                             a.allowedMoves[i] = true;
                             spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        } //else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
-                        //    a.allowedMoves[i] = true;
-                        //    spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        //}
+                        }
                         if (a.schack[i] == true && debuggingMode) {
                             spriteBatch.Draw(red, boardList[i], Color.Yellow);
                         }
@@ -598,37 +578,18 @@ namespace Schack {
             }
             if (runda % 2 != 0 && a.isWhite == false && !blackCheck) {
                 a.am = new bool[64];
-                bool aa = false;
-                bool seizeAble = false;
-                //Piece curr = null;
-                for (int i = 0; i < activePiece.Count; i++) {
-                    if (activePiece[i].isWhite && !activePiece[i].isDead) {
-                        activePiece[i].ActualChecker(core.getBoard((int)activePiece[i].tempPos.X, (int)activePiece[i].tempPos.Y), false);
-                        if (activePiece[i].schack[core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y)] && !core.cantSeize(a, activePiece[i])) {
-                            aa = true;
-                            debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        } //else if (activePiece[i].schack[core.getPos(a)] && core.cantSeize(a, activePiece[i])) {
-                        //    aa = true;
-                        //    seizeAble = true;
-                        //    curr = activePiece[i];
-                        //    debugger.Add(activePiece[i].toString() + " " + activePiece[i].isWhite);
-                        //}
-                    }
-                }
                 a.ActualChecker(core.getBoard((int)a.tempPos.X, (int)a.tempPos.Y), false);
+                List<int> allMoves = core.SimulateRound(a);
                 for (int i = 0; i < 8 * 8; i++) {
                     if (a.rectangle.Contains(mus.Position) && core.ui.LeftMousePressed()) {
-                        if (a.Checker(boardList[i]) && !aa) {
+                        if (a.Checker(boardList[i]) && allMoves.Contains(i)) {
                             a.allowedMoves[i] = true;
                             if (isWho[i] != null && isWho[i].isWhite != a.isWhite) {
                                 spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                             } else if (isWho[i] == null) {
                                 spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
                             }
-                        } //else if (a.Checker(boardList[i]) && aa && seizeAble && core.WhereSeize(a, curr) == i) {
-                            //a.allowedMoves[i] = true;
-                            //spriteBatch.Draw(red, boardList[i], Color.Green * 0.5f);
-                        //}
+                        }
                         if (a.schack[i] == true && debuggingMode) {
                             spriteBatch.Draw(red, boardList[i], Color.Yellow);
                         }

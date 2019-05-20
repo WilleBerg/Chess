@@ -8,10 +8,13 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Schack
 {
-    class Knight : Piece
+    public class Knight : Piece
     {
         public Knight(Texture2D newTexture, Rectangle newRectangle, Vector2 newVector, Vector2 newtempVector, bool newIsWhite, bool[] allowedMoves, bool[] am, bool isDead, int checkCounter, bool[] checkArray) : base(newTexture, newRectangle, newVector, newtempVector, newIsWhite, allowedMoves, am, isDead, checkCounter, checkArray)
         {
+        }
+
+        public Knight(Piece a) : base(a) {
         }
 
         public override void ActualChecker(int pos, bool lfs)
@@ -254,6 +257,108 @@ namespace Schack
             }
             if (DownLeftSecond(pos, false) && Game1.isWho[pos + 15] != null && Game1.isWho[pos + 15] is King && Game1.isWho[pos + 15].isWhite != isWhite) {
                 checkArray[pos + 15] = true;
+            }
+        }
+
+
+        public override void SimulateAllowedMoves(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            am = new bool[64];
+            if (SimDownLeftFirst(pos, isWho, isTaken, tmpList)) {
+                am[pos + 6] = true;
+            }
+            if (SimDownLeftSecond(pos, isWho, isTaken, tmpList)) {
+                am[pos + 15] = true;
+            }
+            if (SimDownRightFirst(pos, isWho, isTaken, tmpList)) {
+                am[pos + 10] = true;
+            }
+            if (SimDownRightSecond(pos, isWho, isTaken, tmpList)) {
+                am[pos + 17] = true;
+            }
+            if (SimUpLeftFirst(pos, isWho, isTaken, tmpList)) {
+                am[pos - 10] = true;
+            }
+            if (SimUpLeftSecond(pos, isWho, isTaken, tmpList)) {
+                am[pos - 17] = true;
+            }
+            if (SimUpRightFirst(pos, isWho, isTaken, tmpList)) {
+                am[pos - 6] = true;
+            }
+            if (SimUpRightSecond(pos, isWho, isTaken, tmpList)) {
+                am[pos - 15] = true;
+            }
+        }
+        private bool SimDownLeftFirst(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos + 6 <= 63 && !isTaken[pos + 6] && !((((pos % 8) == 0) || (pos % 8) == 1))) {
+                return true;
+            } else if (pos + 6 <= 63 && isTaken[pos + 6] && (!((((pos % 8) == 0) || (pos % 8) == 1))) && isWho[pos + 6].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimDownLeftSecond(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if ((pos + 15 <= 63 && !isTaken[pos + 15]) && !((pos % 8) == 0)) {
+                return true;
+            } else if ((pos + 15 <= 63 && isTaken[pos + 15]) && !((pos % 8) == 0) && isWho[pos + 15].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimDownRightFirst(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos + 10 <= 63 && !isTaken[pos + 10] && !((((pos % 8) == 7) || (pos % 8) == 6))) {
+                return true;
+            } else if (pos + 10 <= 63 && isTaken[pos + 10] && (!((((pos % 8) == 7) || (pos % 8) == 6))) && isWho[pos + 10].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimDownRightSecond(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos + 17 <= 63 && !isTaken[pos + 17] && !((pos % 8) == 7)) {
+                return true;
+            } else if (pos + 17 <= 63 && isTaken[pos + 17] && !((pos % 8) == 7) && isWho[pos + 17].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+
+        private bool SimUpRightFirst(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos - 6 >= 0 && !isTaken[pos - 6] && !((((pos % 8) == 6) || (pos % 8) == 7))) {
+                return true;
+            } else if (pos - 6 >= 0 && isTaken[pos - 6] && (!((((pos % 8) == 6) || (pos % 8) == 7)) && isWho[pos - 6].isWhite != isWhite)) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimUpRightSecond(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos - 15 >= 0 && !isTaken[pos - 15] && !((pos % 8) == 7)) {
+                return true;
+            } else if (pos - 15 >= 0 && isTaken[pos - 15] && !((pos % 8) == 7) && isWho[pos - 15].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimUpLeftFirst(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos - 10 >= 0 && !isTaken[pos - 10] && !((((pos % 8) == 0) || (pos % 8) == 1))) {
+                return true;
+            } else if (pos - 10 >= 0 && isTaken[pos - 10] && (!((((pos % 8) == 0) || (pos % 8) == 1))) && isWho[pos - 10].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
+            }
+        }
+        private bool SimUpLeftSecond(int pos, Piece[] isWho, bool[] isTaken, List<Piece> tmpList) {
+            if (pos - 17 >= 0 && !isTaken[pos - 17] && !((pos % 8) == 0)) {
+                return true;
+            } else if (pos - 17 >= 0 && isTaken[pos - 17] && !((pos % 8) == 0) && isWho[pos - 17].isWhite != isWhite) {
+                return true;
+            }  else {
+                return false;
             }
         }
     }
